@@ -1,0 +1,12 @@
+.DS_Store
+
+# private company documents — do not publish
+IPAX_*.docx
+
+# design reference screenshot (7MB, third-party site)
+www.pulsenova.ch_.png
+
+# local design backup
+index_original_backup.html
+
+# node_modules is committed on purpose: index.html loads gsap/lenis from it

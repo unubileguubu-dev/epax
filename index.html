@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EPAX — Peace in Every Process</title>
+<meta name="description" content="EPAX gets Mongolian hotels, restaurants, and tour operators found by foreign tourists. English presence, social media, guest communications — handled." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300..700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0e1c2d;
+    --muted:#5b6a7a;
+    --ghost:#cfd6de;          /* unrevealed word color */
+    --line:#e3e8ee;
+    --pill:#eef2f6;
+    --card:#f5f8fa;
+    --navy:#042C53;
+    --blue:#4a8fdd;
+    --blue-l:#85B7EB;
+    --gold:#C9A84C;
+    --red:#d96757;
+    --green:#5b9f68;
+    --r-lg:28px;
+    --r-md:24px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  body{
+    font-family:'Google Sans Flex','Google Sans',sans-serif;
+    font-weight:400;font-size:16px;line-height:1.55;
+    color:var(--ink);background:#fff;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;}
+  ::selection{background:var(--navy);color:var(--gold);}
+  .wrap{width:100%;max-width:1360px;margin:0 auto;padding:0 2.5rem;}
+
+  /* ============ PILL BUTTONS ============ */
+  .pill{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-size:.925rem;font-weight:500;line-height:1;
+    padding:.95rem 1.6rem;border-radius:9999px;border:none;cursor:pointer;
+    transition:transform .25s cubic-bezier(.2,.6,.2,1),box-shadow .25s ease,background .25s ease;
+    white-space:nowrap;
+  }
+  .pill-dark{background:var(--navy);color:#fff;}
+  .pill-dark:hover{transform:scale(1.03);box-shadow:0 6px 24px rgba(4,44,83,.28);}
+  .pill-gray{background:var(--pill);color:var(--ink);}
+  .pill-gray:hover{background:#e8eaed;transform:scale(1.03);}
+  .pill-white{background:#fff;color:var(--ink);}
+  .pill-white:hover{transform:scale(1.03);box-shadow:0 6px 24px rgba(255,255,255,.15);}
+  .pill-ghost{background:rgba(255,255,255,.12);color:#fff;backdrop-filter:blur(6px);}
+  .pill-ghost:hover{background:rgba(255,255,255,.2);transform:scale(1.03);}
+
+  /* ============ NAV ============ */
+  nav{
+    position:fixed;inset:0 0 auto 0;z-index:200;height:72px;
+    display:flex;align-items:center;
+    background:rgba(255,255,255,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    transition:box-shadow .3s ease;
+  }
+  nav.scrolled{box-shadow:0 1px 0 var(--line);}
+  .nav-in{display:flex;align-items:center;width:100%;max-width:1360px;margin:0 auto;padding:0 2.5rem;gap:3.5rem;}
+  .nav-logo{display:flex;align-items:center;gap:.65rem;flex-shrink:0;}
+  .nav-logo svg{display:block;}
+  .nav-wm{font-size:1.2rem;font-weight:500;letter-spacing:.14em;color:var(--navy);}
+  .nav-links{display:flex;align-items:center;gap:2.2rem;list-style:none;flex:1;}
+  .nav-links a{font-size:.95rem;color:var(--ink);display:inline-flex;align-items:center;gap:.3rem;opacity:.9;transition:opacity .2s ease;}
+  .nav-links a:hover{opacity:.55;}
+  .nav-cta{flex-shrink:0;}
+  .lang-tg{margin-left:auto;display:flex;align-items:center;gap:2px;border:1px solid var(--line);border-radius:999px;padding:3px;background:#fff;flex-shrink:0;}
+  .lang-tg button{font-family:inherit;font-size:.76rem;font-weight:500;letter-spacing:.04em;padding:.38rem .75rem;border-radius:999px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:background .25s ease,color .25s ease;}
+  .lang-tg button.on{background:var(--navy);color:#fff;}
+  .lang-tg button:hover:not(.on){color:var(--navy);}
+  .nav-cta .pill{padding:.75rem 1.35rem;font-size:.9rem;}
+  .nav-burger{display:none;margin-left:auto;background:none;border:none;cursor:pointer;width:40px;height:40px;}
+  .nav-burger span{display:block;width:20px;height:1.8px;background:var(--ink);margin:5px auto;border-radius:2px;transition:transform .3s ease,opacity .3s ease;}
+  .nav-burger.open span:nth-child(1){transform:translateY(6.8px) rotate(45deg);}
+  .nav-burger.open span:nth-child(2){opacity:0;}
+  .nav-burger.open span:nth-child(3){transform:translateY(-6.8px) rotate(-45deg);}
+  .nav-mobile{display:none;position:fixed;top:72px;left:0;right:0;z-index:199;background:#fff;border-bottom:1px solid var(--line);padding:1.5rem 2.5rem 2rem;}
+  .nav-mobile.open{display:block;}
+  .nav-mobile a{display:block;font-size:1.05rem;padding:.7rem 0;}
+
+  /* ============ HERO ============ */
+  #hero{position:relative;padding:170px 0 40px;text-align:center;overflow:hidden;}
+  .confetti{position:absolute;inset:0;pointer-events:none;z-index:0;}
+  /* canvas is a replaced element: inset:0 alone won't stretch it — needs explicit 100% */
+  #heroDots{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+  .confetti i{position:absolute;display:block;border-radius:3px;transform:rotate(var(--rot,0deg));}
+  .hero-h1{
+    position:relative;z-index:1;
+    font-size:clamp(2.6rem,6.2vw,5rem);
+    font-weight:450;line-height:1.1;letter-spacing:-.01em;
+    max-width:17ch;margin:0 auto 3rem;
+    min-height:2.2em;color:var(--navy);
+  }
+  .caret{
+    display:inline-block;width:.09em;height:.92em;margin-left:.04em;
+    vertical-align:-.08em;border-radius:2px;
+    background:linear-gradient(180deg,var(--blue) 0%,var(--gold) 100%);
+    animation:blink 1s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  .hero-btns{position:relative;z-index:1;display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:5.5rem;}
+
+  /* hero media card */
+  .hero-media{position:relative;z-index:1;}
+  .black-card{
+    position:relative;background:#030e1c;border-radius:var(--r-lg);overflow:hidden;
+  }
+  .stars{position:absolute;inset:0;pointer-events:none;}
+  .stars i{position:absolute;display:block;border-radius:2px;opacity:var(--o,.5);}
+  .hero-shot{position:relative;padding:clamp(2.5rem,6vw,5.5rem) clamp(1.25rem,6vw,6rem);display:flex;justify-content:center;}
+
+  /* google-search mockup */
+  .mock-search{
+    width:min(760px,100%);background:#fff;border-radius:16px;overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+    text-align:left;font-size:13px;
+  }
+  .mock-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid #eef0f2;}
+  .mock-dot{width:9px;height:9px;border-radius:50%;}
+  .mock-url{flex:1;margin-left:10px;background:#f1f3f4;border-radius:999px;padding:6px 14px;color:#5f6368;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mock-body{display:flex;}
+  .mock-results{flex:1.35;padding:18px 22px;min-width:0;}
+  .mock-q{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #dfe1e5;border-radius:999px;padding:9px 16px;margin-bottom:16px;color:#202124;box-shadow:0 1px 5px rgba(32,33,36,.1);}
+  .mock-q svg{flex-shrink:0;}
+  .mock-listing{border:1px solid #eef0f2;border-radius:12px;padding:13px 15px;margin-bottom:10px;}
+  .mock-listing.top{border-color:#cfe3f8;background:#f6faff;}
+  .mock-name{font-weight:500;color:#1a0dab;font-size:14px;margin-bottom:2px;}
+  .mock-stars{color:#e8a33d;font-size:11px;letter-spacing:1px;}
+  .mock-meta{color:#5f6368;font-size:11.5px;margin-top:3px;line-height:1.5;}
+  .mock-badge{display:inline-block;font-size:10px;font-weight:500;color:#0b57d0;background:#e8f0fe;border-radius:999px;padding:2px 9px;margin-top:7px;}
+  .mock-map{flex:1;position:relative;background:linear-gradient(135deg,#e8efe4 0%,#dce9f5 55%,#e9f0e6 100%);min-height:100%;display:none;}
+  .mock-pin{position:absolute;top:42%;left:48%;transform:translate(-50%,-100%);}
+  .mock-road{position:absolute;background:#fff;border-radius:4px;}
+  @media(min-width:700px){.mock-map{display:block;}}
+
+  /* ============ ICON ARC ============ */
+  #arc{padding:7rem 0 5rem;overflow:hidden;}
+  .arc-row{position:relative;height:220px;}
+  .chip{
+    position:absolute;
+    opacity:0;transform:translateY(30px) scale(.55);
+    transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .75s cubic-bezier(.34,1.45,.5,1);
+  }
+  .chip.in{opacity:1;transform:none;}
+  .chip-b{
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    background:#fff;border:1px solid #eceef0;border-radius:50%;
+    box-shadow:0 8px 26px rgba(18,19,23,.07);
+    transition:box-shadow .35s ease;
+  }
+  .chip-b:hover{box-shadow:0 16px 40px rgba(18,19,23,.14);}
+  .chip svg{width:38%;height:38%;stroke:var(--navy);}
+
+  /* ============ SECTION COMMON ============ */
+  .sec-h2{font-size:clamp(1.9rem,3.4vw,2.65rem);font-weight:450;line-height:1.18;letter-spacing:-.005em;color:var(--navy);}
+  .lead-gray{color:#8fa3b8;}
+
+  /* ============ SERVICE ROWS ============ */
+  #services{padding:3rem 0 2rem;}
+  .svc-row{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:clamp(2.5rem,6vw,7rem);padding:5.5rem 0;align-items:start;}
+  .svc-copy{position:sticky;top:120px;}
+  .svc-h{font-size:clamp(2rem,3.6vw,2.9rem);font-weight:450;line-height:1.15;margin-bottom:1.4rem;letter-spacing:-.005em;color:var(--navy);}
+  .svc-p{font-size:1.06rem;line-height:1.65;max-width:42ch;}
+  .svc-p .w{color:var(--ghost);transition:color .35s ease;}
+  .svc-p .w.on{color:var(--ink);}
+  .svc-cta{margin-top:2.2rem;}
+
+  .media{border-radius:var(--r-lg);overflow:hidden;position:relative;}
+  .media-glow{position:relative;border-radius:var(--r-lg);padding:clamp(1.5rem,4vw,3.5rem);background:#fbfbfc;}
+  .media-glow::before{
+    content:'';position:absolute;inset:-30px;z-index:0;filter:blur(38px);opacity:.6;
+    background:
+      radial-gradient(240px 240px at 8% 12%,rgba(74,143,221,.6),transparent 65%),
+      radial-gradient(240px 240px at 92% 16%,rgba(201,168,76,.55),transparent 65%),
+      radial-gradient(240px 240px at 10% 90%,rgba(133,183,235,.6),transparent 65%),
+      radial-gradient(240px 240px at 90% 88%,rgba(4,44,83,.4),transparent 65%);
+  }
+  .media-glow>*{position:relative;z-index:1;}
+
+  /* maps listing mockup */
+  .mock-maps{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(18,19,23,.14);overflow:hidden;max-width:560px;margin:0 auto;font-size:13px;}
+  .maps-photo{height:170px;background:
+      radial-gradient(120% 90% at 70% 0%,#9cc3ea 0%,#6fa3d8 34%,transparent 60%),
+      linear-gradient(180deg,#aecbe8 0%,#c8dcc2 52%,#8fb387 78%,#7aa26f 100%);position:relative;}
+  .maps-photo::after{content:'';position:absolute;left:0;right:0;bottom:0;height:44%;
+      background:radial-gradient(60% 100% at 50% 100%,rgba(255,255,255,.5),transparent 70%);}
+  .ger{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:74px;height:38px;background:#faf8f2;border-radius:40px 40px 6px 6px;box-shadow:0 4px 14px rgba(0,0,0,.18);}
+  .ger::before{content:'';position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:26px;height:14px;background:#efe9da;border-radius:20px 20px 0 0;}
+  .maps-info{padding:16px 20px 18px;}
+  .maps-name{font-size:17px;font-weight:500;}
+  .maps-rate{display:flex;align-items:center;gap:6px;margin:5px 0 3px;color:#5f6368;font-size:12px;}
+  .maps-rate b{color:var(--ink);font-weight:500;}
+  .maps-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+  .mtag{font-size:11px;padding:4px 11px;border-radius:999px;background:#f1f3f4;color:#3c4043;}
+  .mtag.hl{background:#e8f0fe;color:#0b57d0;font-weight:500;}
+  .maps-actions{display:flex;gap:14px;border-top:1px solid #eef0f2;padding:12px 20px;}
+  .mact{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:#0b57d0;flex:1;}
+  .mact i{width:34px;height:34px;border-radius:50%;background:#e8f0fe;display:flex;align-items:center;justify-content:center;font-style:normal;}
+
+  /* instagram mockup */
+  .mock-ig{background:#fff;border-radius:18px;overflow:hidden;max-width:420px;margin:0 auto;box-shadow:0 30px 70px rgba(0,0,0,.5);font-size:13px;}
+  .ig-head{display:flex;align-items:center;gap:10px;padding:11px 14px;}
+  .ig-av{width:34px;height:34px;border-radius:50%;padding:2px;background:conic-gradient(from 200deg,#C9A84C,#d96757,#b05fa8,#4a8fdd,#C9A84C);}
+  .ig-av span{display:block;width:100%;height:100%;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;}
+  .ig-user{font-weight:500;font-size:13px;}
+  .ig-loc{font-size:11px;color:#5f6368;}
+  .ig-img{height:270px;position:relative;background:url('terelj-sunset.jpg') center/cover no-repeat #1a2233;}
+  .ig-sun{display:none;}
+  .ig-cap{padding:12px 14px 16px;line-height:1.5;color:#262626;}
+  .ig-likes{font-weight:500;margin-bottom:4px;}
+  .ig-cap b{font-weight:500;}
+  .ig-row{display:flex;gap:14px;padding:10px 14px 0;}
+
+  /* chat mockup */
+  .mock-chat{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(18,19,23,.14);max-width:520px;margin:0 auto;overflow:hidden;font-size:13.5px;}
+  .chat-head{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid #eef0f2;}
+  .chat-av{width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;}
+  .chat-name{font-weight:500;font-size:13.5px;}
+  .chat-sub{font-size:11px;color:#5b9f68;}
+  .chat-body{padding:18px;display:flex;flex-direction:column;gap:10px;background:#fafbfc;}
+  .bubble{max-width:78%;padding:10px 14px;border-radius:16px;line-height:1.5;}
+  .bubble.in{background:#eef0f3;color:#202124;border-bottom-left-radius:5px;align-self:flex-start;}
+  .bubble.out{background:var(--navy);color:#fff;border-bottom-right-radius:5px;align-self:flex-end;}
+  .chat-time{font-size:10.5px;color:#9aa0a6;align-self:flex-start;margin-left:4px;}
+  .chat-time.r{align-self:flex-end;margin-right:4px;}
+  .chat-note{display:inline-flex;align-items:center;gap:6px;align-self:center;font-size:11px;color:#3B6D11;background:#EAF3DE;border-radius:999px;padding:5px 13px;margin-top:4px;}
+
+  /* report ring card */
+  .ring-card{min-height:520px;display:flex;align-items:center;justify-content:center;position:relative;}
+  .ring{
+    position:absolute;width:min(560px,86%);aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(closest-side,transparent 58%,rgba(74,143,221,.28) 66%,rgba(133,183,235,.75) 74%,rgba(74,143,221,.28) 82%,transparent 92%);
+    filter:blur(6px);
+  }
+  .ring-inner{position:relative;text-align:center;color:#fff;}
+  .ring-t{font-size:clamp(1.6rem,3vw,2.3rem);font-weight:450;letter-spacing:.02em;text-shadow:0 0 30px rgba(133,183,235,.9);}
+  .ring-s{font-size:.85rem;color:#8ab0d8;margin-top:6px;}
+  .ring-chips{display:flex;gap:8px;justify-content:center;margin-top:22px;flex-wrap:wrap;}
+  .rchip{font-size:11px;color:#cfe0f2;background:rgba(133,183,235,.14);border:1px solid rgba(133,183,235,.3);border-radius:999px;padding:5px 13px;}
+
+  /* ============ BUILT FOR ============ */
+  #who{padding:7rem 0 6rem;border-top:1px solid var(--line);}
+  .who-head{display:grid;grid-template-columns:1fr minmax(280px,420px);gap:3rem;align-items:end;margin-bottom:4.5rem;}
+  .who-head p{color:var(--muted);font-size:1.02rem;line-height:1.65;}
+  .seg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .seg{
+    background:var(--card);border-radius:var(--r-lg);padding:2.4rem 2.2rem 2.2rem;
+    display:flex;flex-direction:column;min-height:380px;
+    transition:background .3s ease,transform .3s cubic-bezier(.2,.6,.2,1);
+  }
+  .seg:hover{background:#ecf2f8;transform:translateY(-4px);}
+  .seg-lbl{font-size:.78rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1.6rem;}
+  .seg-t{font-size:1.55rem;font-weight:450;line-height:1.25;margin-bottom:.9rem;color:var(--navy);}
+  .seg-d{font-size:.95rem;color:var(--muted);line-height:1.6;flex:1;}
+  .seg-stat{font-size:2.2rem;font-weight:450;margin:1.6rem 0 .1rem;color:var(--navy);}
+  .seg-stat-l{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;}
+  .seg a{font-size:.95rem;font-weight:500;display:inline-flex;align-items:center;gap:.45rem;}
+  .seg a svg{transition:transform .25s ease;}
+  .seg a:hover svg{transform:translateX(4px);}
+
+  /* stat band */
+  .stat-band{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;padding:5rem 0 1rem;}
+  .sb .n{font-size:clamp(2.4rem,4vw,3.4rem);font-weight:450;line-height:1;color:var(--navy);}
+  .sb .l{font-size:.9rem;color:var(--muted);margin-top:.6rem;max-width:22ch;}
+
+  /* ============ SPLIT CTA (dotted) ============ */
+  #twin{
+    padding:8rem 0;border-top:1px solid var(--line);
+    background-image:radial-gradient(rgba(18,19,23,.16) 1.1px,transparent 1.1px),radial-gradient(rgba(18,19,23,.09) 1px,transparent 1px);
+    background-size:26px 26px,37px 37px;
+    background-position:0 0,13px 17px;
+  }
+  .twin-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;}
+  .twin-c{text-align:center;padding:3rem 1rem;}
+  .twin-badge{display:inline-block;font-size:.78rem;font-weight:500;background:#fff;border:1px solid var(--line);border-radius:999px;padding:.45rem 1rem;margin-bottom:1.6rem;box-shadow:0 2px 10px rgba(18,19,23,.05);}
+  .twin-h{font-size:clamp(1.9rem,3.2vw,2.6rem);font-weight:450;line-height:1.2;color:var(--navy);}
+  .twin-h span{display:block;color:#8fa3b8;}
+  .twin-c .pill{margin-top:2.2rem;}
+
+  /* ============ PRICING ============ */
+  #pricing{padding:7.5rem 0;}
+  .pr-head{display:flex;align-items:end;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-bottom:3rem;}
+  .ptabs{display:flex;gap:.5rem;flex-wrap:wrap;}
+  .ptab{font-size:.9rem;font-weight:500;padding:.7rem 1.4rem;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:all .25s ease;}
+  .ptab.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .ptab:hover:not(.on){background:var(--pill);}
+  .pgrid{display:none;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .pgrid.show{display:grid;}
+  .plan{border:1px solid var(--line);border-radius:var(--r-lg);padding:2.4rem 2.2rem;display:flex;flex-direction:column;background:#fff;}
+  .plan.ft{background:var(--navy);color:#fff;border:1px solid var(--gold);}
+  .plan-name{font-size:.85rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+  .plan.ft .plan-name{color:#85B7EB;}
+  .plan-badge{display:inline-block;font-size:.72rem;font-weight:500;background:var(--gold);color:var(--navy);border-radius:999px;padding:.3rem .8rem;margin-left:.6rem;vertical-align:middle;}
+  .plan-price{font-size:3rem;font-weight:450;line-height:1;margin:1.4rem 0 .3rem;color:var(--navy);}
+  html[lang="mn"] .plan-price{font-size:2.1rem;} /* MNT amounts are longer — keep them on one line */
+  .plan.ft .plan-price{color:#fff;}
+  .plan-freq{font-size:.85rem;color:var(--muted);margin-bottom:1.8rem;}
+  .plan.ft .plan-freq{color:#8fb4dd;}
+  .plan-feats{list-style:none;display:flex;flex-direction:column;gap:.65rem;flex:1;margin-bottom:2rem;}
+  .plan-feats li{font-size:.92rem;display:flex;gap:.6rem;align-items:flex-start;color:#3a4a5c;}
+  .plan.ft .plan-feats li{color:#cfe0f0;}
+  .plan-feats svg{flex-shrink:0;margin-top:3px;}
+  .plan .pill{align-self:flex-start;}
+  .plan-save{font-size:.8rem;color:var(--green);margin-top:1rem;}
+  .plan.ft .plan-save{color:var(--gold);}
+
+  /* ============ STORIES ============ */
+  #stories{padding:2rem 0 7rem;}
+  .st-head{display:flex;align-items:center;justify-content:space-between;gap:2rem;margin-bottom:2.8rem;}
+  .st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .story{background:var(--card);border-radius:var(--r-md);padding:2.2rem 2rem;display:flex;flex-direction:column;gap:1.4rem;}
+  .st-stars{color:var(--gold);font-size:.9rem;letter-spacing:2px;}
+  .st-q{font-size:1.02rem;line-height:1.65;flex:1;}
+  .st-a{display:flex;align-items:center;gap:.8rem;}
+  .st-av{width:40px;height:40px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+  .st-n{font-size:.92rem;font-weight:500;}
+  .st-r{font-size:.82rem;color:var(--muted);}
+
+  /* ============ FINAL CTA ============ */
+  #cta .black-card{padding:clamp(4rem,9vw,8rem) clamp(2rem,6vw,5.5rem);}
+  .cta-h{position:relative;font-size:clamp(2.3rem,5vw,4.2rem);font-weight:450;line-height:1.12;color:#fff;max-width:16ch;min-height:2.3em;margin-bottom:3rem;}
+  .cta-btns{display:flex;gap:.8rem;flex-wrap:wrap;position:relative;}
+  .cta-note{position:relative;margin-top:2.6rem;font-size:.9rem;color:#8ba2ba;max-width:52ch;line-height:1.6;}
+
+  /* ============ FOOTER ============ */
+  footer{padding:6rem 0 2.5rem;overflow:hidden;}
+  .ft-top{display:grid;grid-template-columns:1fr auto auto auto;gap:clamp(2.5rem,6vw,6rem);padding-bottom:5rem;}
+  .ft-h{font-size:clamp(1.7rem,2.6vw,2.2rem);font-weight:450;max-width:14ch;line-height:1.25;color:var(--navy);}
+  .ft-col-t{font-size:.85rem;font-weight:500;color:var(--muted);margin-bottom:1.1rem;}
+  .ft-links{list-style:none;display:flex;flex-direction:column;gap:.7rem;}
+  .ft-links a{font-size:.95rem;color:var(--ink);transition:opacity .2s ease;}
+  .ft-links a:hover{opacity:.55;}
+  .ft-giant{
+    font-size:clamp(5rem,21vw,20rem);font-weight:500;letter-spacing:-.015em;line-height:.78;
+    text-align:center;white-space:nowrap;user-select:none;
+    margin-bottom:-.06em;color:var(--navy);
+  }
+  .ft-giant svg{
+    display:inline-block;width:.72em;height:.72em;
+    vertical-align:-.015em;margin-left:.05em;
+  }
+  .ft-bot{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:2rem;margin-top:4rem;}
+  .ft-brand{display:flex;align-items:center;gap:.6rem;font-weight:500;letter-spacing:.1em;}
+  .ft-legal{display:flex;gap:1.8rem;font-size:.88rem;color:var(--muted);flex-wrap:wrap;}
+  .ft-legal a:hover{color:var(--ink);}
+
+  /* ============ REVEAL ============ */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.6,.2,1),transform .7s cubic-bezier(.2,.6,.2,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ============ MOTION ============ */
+  html.lenis{scroll-behavior:auto!important;}
+  #trail{position:fixed;inset:0;z-index:300;pointer-events:none;}
+  /* when the GSAP engine drives reveals, neutralize the CSS-class fallback */
+  .gsap-motion .reveal{opacity:1;transform:none;transition:none;}
+  .gsap-motion .anim-child{opacity:1;transform:none;transition:none;}
+  .anim-child{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.2,.6,.2,1),transform .6s cubic-bezier(.2,.6,.2,1);}
+  .anim-in>.anim-child{opacity:1;transform:none;}
+  .hero-media .black-card,#cta .black-card,.svc-row .media,.ft-giant{will-change:transform;}
+  @media (prefers-reduced-motion: no-preference){
+    .confetti i{will-change:transform;animation:floaty var(--fd,7s) ease-in-out var(--fdel,0s) infinite;}
+    .stars i{animation:twinkle var(--td,3.5s) ease-in-out var(--tdel,0s) infinite;}
+    .ring{animation:ringpulse 5.5s ease-in-out infinite;}
+    .chip-b{animation:bob var(--bd,5s) ease-in-out var(--bdel,0s) infinite;}
+    .ig-sun{animation:sunglow 4s ease-in-out infinite;}
+  }
+  @keyframes floaty{
+    0%,100%{transform:translateY(0) rotate(var(--rot,0deg));}
+    50%{transform:translateY(-18px) rotate(calc(var(--rot,0deg) + 14deg));}
+  }
+  @keyframes twinkle{0%,100%{opacity:var(--o,.5);}50%{opacity:.06;}}
+  @keyframes ringpulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.04);opacity:.8;}}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-11px);}}
+  @keyframes sunglow{0%,100%{box-shadow:0 0 34px 14px rgba(255,236,190,.85);}50%{box-shadow:0 0 50px 22px rgba(255,236,190,.6);}}
+
+  /* ============ RESPONSIVE ============ */
+  @media(max-width:1080px){
+    .nav-links{display:none;}
+    .nav-burger{display:block;}
+    .nav-cta{display:none;}
+    .svc-row{grid-template-columns:1fr;gap:2.5rem;}
+    .svc-copy{position:static;}
+    .seg-grid{grid-template-columns:1fr;}
+    .seg{min-height:0;}
+    .stat-band{grid-template-columns:1fr 1fr;gap:2.5rem 1.5rem;}
+    .twin-grid{grid-template-columns:1fr;gap:2rem;}
+    .pgrid{grid-template-columns:1fr;}
+    .pgrid.show{gap:.8rem;}
+    .st-grid{grid-template-columns:1fr;}
+    .who-head{grid-template-columns:1fr;align-items:start;gap:1.5rem;margin-bottom:3rem;}
+    .ft-top{grid-template-columns:1fr 1fr;}
+    .ring-card{min-height:400px;}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 1.25rem;}
+    .nav-in{padding:0 1.25rem;}
+    #hero{padding-top:130px;}
+    .hero-h1{margin-bottom:2.2rem;}
+    .hero-btns{margin-bottom:3.5rem;}
+    .ft-top{grid-template-columns:1fr;}
+    .arc-row{height:150px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav id="nav">
+  <div class="nav-in">
+    <a href="#" class="nav-logo" aria-label="EPAX home">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <line x1="8" y1="8" x2="24" y2="24" stroke="#042C53" stroke-width="3.2" stroke-linecap="round"/>
+        <line x1="24" y1="8" x2="8" y2="24" stroke="#042C53" stroke-width="3.2" stroke-linecap="round"/>
+        <line x1="16" y1="4" x2="16" y2="28" stroke="#C9A84C" stroke-width="2.6" stroke-linecap="round"/>
+        <line x1="4" y1="16" x2="28" y2="16" stroke="#C9A84C" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-wm">EPAX</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a href="#who">Who We Serve <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#stories">Clients</a></li>
+    </ul>
+    <div class="lang-tg" role="group" aria-label="Language">
+      <button type="button" data-lang="en" class="on" onclick="setLang('en')">EN</button>
+      <button type="button" data-lang="mn" onclick="setLang('mn')">MN</button>
+    </div>
+    <div class="nav-cta">
+      <a href="#cta" class="pill pill-dark">Free Audit
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <button class="nav-burger" id="burger" aria-label="Menu" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="#services" onclick="toggleNav()">Services</a>
+  <a href="#who" onclick="toggleNav()">Who We Serve</a>
+  <a href="#pricing" onclick="toggleNav()">Pricing</a>
+  <a href="#stories" onclick="toggleNav()">Clients</a>
+  <a href="#cta" onclick="toggleNav()" style="font-weight:500;">Free Audit ↗</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <canvas id="heroDots" aria-hidden="true"></canvas>
+  <div class="confetti" id="confettiHero"></div>
+  <div class="wrap">
+    <h1 class="hero-h1"><span id="typeHero"></span><span class="caret" id="caretHero"></span></h1>
+    <div class="hero-btns">
+      <a href="#cta" class="pill pill-dark">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.7"/><path d="m10.6 10.6 3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Get a Free Audit
+      </a>
+      <a href="#services" class="pill pill-gray">Explore services</a>
+    </div>
+    <div class="hero-media">
+      <div class="black-card">
+        <div class="stars" data-stars="90"></div>
+        <div class="hero-shot">
+          <div class="mock-search" data-no-i18n>
+            <div class="mock-bar">
+              <span class="mock-dot" style="background:#ed6a5e;"></span>
+              <span class="mock-dot" style="background:#f4bf4f;"></span>
+              <span class="mock-dot" style="background:#61c554;"></span>
+              <span class="mock-url">google.com/search?q=best+hotel+ulaanbaatar</span>
+            </div>
+            <div class="mock-body">
+              <div class="mock-results">
+                <div class="mock-q">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="4.6" stroke="#9aa0a6" stroke-width="1.7"/><path d="m10.6 10.6 3 3" stroke="#9aa0a6" stroke-width="1.7" stroke-linecap="round"/></svg>
+                  best hotel in ulaanbaatar
+                </div>
+                <div class="mock-listing top">
+                  <div class="mock-name">Khan Boutique Hotel — Ulaanbaatar</div>
+                  <div class="mock-stars">★★★★★ <span style="color:#5f6368;">4.8 (312 reviews)</span></div>
+                  <div class="mock-meta">English-speaking staff · Free airport pickup · City centre</div>
+                  <span class="mock-badge">Replies within hours · Presence by EPAX</span>
+                </div>
+                <div class="mock-listing">
+                  <div class="mock-name" style="color:#5f6368;">Hotel with no English profile</div>
+                  <div class="mock-meta">No photos · No reviews · Tourists scroll past</div>
+                </div>
+              </div>
+              <div class="mock-map">
+                <span class="mock-road" style="top:20%;left:-4%;width:70%;height:7px;transform:rotate(14deg);"></span>
+                <span class="mock-road" style="top:58%;left:26%;width:90%;height:9px;transform:rotate(-9deg);"></span>
+                <span class="mock-road" style="top:-6%;left:56%;width:7px;height:80%;transform:rotate(12deg);"></span>
+                <span class="mock-pin">
+                  <svg width="34" height="42" viewBox="0 0 34 42" fill="none" aria-hidden="true"><path d="M17 41C17 41 32 24.6 32 15.5 32 7 25.3 1 17 1S2 7 2 15.5C2 24.6 17 41 17 41Z" fill="#d93025" stroke="#fff" stroke-width="2"/><circle cx="17" cy="15" r="5.5" fill="#fff"/></svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ICON ARC ============ -->
+<section id="arc" aria-hidden="true">
+  <div class="arc-row" id="arcRow"></div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section id="services">
+  <div class="wrap">
+
+    <!-- 1 · Platform presence -->
+    <div class="svc-row">
+      <div class="svc-copy">
+        <h2 class="svc-h">Platform presence</h2>
+        <p class="svc-p" data-scrub>Google Maps, TripAdvisor, and Booking.com — fully set up and optimized in English. When 809,000 foreign tourists search for a place to stay, eat, or explore, your business is what they find first.</p>
+      </div>
+      <div class="media media-glow">
+        <div class="mock-maps" data-no-i18n>
+          <div class="maps-photo"><span class="ger"></span></div>
+          <div class="maps-info">
+            <div class="maps-name">Steppe Horizon Ger Camp</div>
+            <div class="maps-rate"><b>4.9</b> <span style="color:#e8a33d;">★★★★★</span> (186) · Tour operator · Töv Province</div>
+            <div class="maps-tags">
+              <span class="mtag hl">English profile</span>
+              <span class="mtag">Photos updated weekly</span>
+              <span class="mtag">Open · Books ahead</span>
+            </div>
+          </div>
+          <div class="maps-actions">
+            <div class="mact"><i>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 14.5s5.5-5.6 5.5-9A5.5 5.5 0 0 0 2.5 5.5c0 3.4 5.5 9 5.5 9Z" stroke="#0b57d0" stroke-width="1.5"/><circle cx="8" cy="5.6" r="1.8" stroke="#0b57d0" stroke-width="1.5"/></svg>
+            </i>Directions</div>
+            <div class="mact"><i>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 3h10v8H6l-3 3V3Z" stroke="#0b57d0" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </i>Message</div>
+            <div class="mact"><i>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h3l1 3.2-1.7 1.2a9 9 0 0 0 3.8 3.8L11.3 9l3.2 1v3a1 1 0 0 1-1.1 1A11.5 11.5 0 0 1 3 3.6a1 1 0 0 1 1-1.1Z" stroke="#0b57d0" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </i>Call</div>
+            <div class="mact"><i>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.8" stroke="#0b57d0" stroke-width="1.4"/><path d="M2.3 8h11.4M8 2.3c-3 3.4-3 8 0 11.4 3-3.4 3-8 0-11.4Z" stroke="#0b57d0" stroke-width="1.3"/></svg>
+            </i>Website</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 · English social media -->
+    <div class="svc-row">
+      <div class="svc-copy">
+        <h2 class="svc-h">English social media</h2>
+        <p class="svc-p" data-scrub>Weekly content on Instagram and Facebook, written in English for international guests — not just local likes. Food, steppe, culture, atmosphere. The kind of content that makes travelers say "I have to go here."</p>
+      </div>
+      <div class="media black-card">
+        <div class="stars" data-stars="60"></div>
+        <div style="position:relative;padding:clamp(2rem,5vw,4rem);">
+          <div class="mock-ig" data-no-i18n>
+            <div class="ig-head">
+              <span class="ig-av"><span>SH</span></span>
+              <div>
+                <div class="ig-user">steppehorizon.mn</div>
+                <div class="ig-loc">Gorkhi-Terelj National Park</div>
+              </div>
+            </div>
+            <!-- Photo: "Sunset over the ger" by scott.presly, CC BY 2.0 — flickr.com/photos/14736601@N00/7698667608 -->
+            <div class="ig-img" role="img" aria-label="Sunset over a ger in Gorkhi-Terelj National Park"></div>
+            <div class="ig-row" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17S2.5 12.6 2.5 7.4A4 4 0 0 1 10 5a4 4 0 0 1 7.5 2.4C17.5 12.6 10 17 10 17Z" stroke="#262626" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M17 3 3 8.5l5.5 2L10.5 16 17 3Z" stroke="#262626" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M15.5 17.5V3.5h-11v14L10 13l5.5 4.5Z" stroke="#262626" stroke-width="1.5" stroke-linejoin="round" style="margin-left:auto;"/></svg>
+            </div>
+            <div class="ig-cap">
+              <div class="ig-likes">1,204 likes</div>
+              <b>steppehorizon.mn</b> Golden hour over the steppe — 90 minutes from Ulaanbaatar, a world away from everything. Summer departures now open. 🌾
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 · Guest communications -->
+    <div class="svc-row">
+      <div class="svc-copy">
+        <h2 class="svc-h">Guest communications</h2>
+        <p class="svc-p" data-scrub>Every DM, review, and inquiry answered in fluent English — fast. No lead left waiting, no tourist left without a reply, no booking lost to silence. A bad review handled well becomes a trust signal.</p>
+      </div>
+      <div class="media media-glow">
+        <div class="mock-chat">
+          <div class="chat-head">
+            <span class="chat-av">M</span>
+            <div>
+              <div class="chat-name">Mia · Booking inquiry</div>
+              <div class="chat-sub">● Handled by EPAX</div>
+            </div>
+          </div>
+          <div class="chat-body">
+            <div class="bubble in" data-no-i18n>Hi! Do you have availability Aug 12–15 for 2 people? Does anyone speak English? 🙂</div>
+            <span class="chat-time">14:02</span>
+            <div class="bubble out" data-no-i18n>Hi Mia! Yes — a twin ger is available Aug 12–15, and our team speaks English. Airport pickup is included. Shall I hold it for you?</div>
+            <span class="chat-time r">14:09</span>
+            <div class="chat-note">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.6" stroke="#3B6D11" stroke-width="1.4"/><path d="M7 4.2V7l2 1.4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Replied in 7 minutes
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 · Reporting -->
+    <div class="svc-row">
+      <div class="svc-copy">
+        <h2 class="svc-h">Reports &amp; invoicing</h2>
+        <p class="svc-p" data-scrub>A clear monthly report on your visibility, inquiries, and growth — plus e-invoice processing, documented and clean. You always know exactly what EPAX did and what it earned you.</p>
+        <div class="svc-cta"><a href="#pricing" class="pill pill-gray">See pricing</a></div>
+      </div>
+      <div class="media black-card ring-card">
+        <div class="stars" data-stars="50"></div>
+        <div class="ring"></div>
+        <div class="ring-inner">
+          <div class="ring-t">EPAX Monthly Report</div>
+          <div class="ring-s">Visibility · Inquiries · Reviews · Growth</div>
+          <div class="ring-chips">
+            <span class="rchip">Map views +142%</span>
+            <span class="rchip">21 inquiries answered</span>
+            <span class="rchip">0 missed leads</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ WHO WE SERVE ============ -->
+<section id="who">
+  <div class="wrap">
+    <div class="who-head reveal">
+      <h2 class="sec-h2">Built for hospitality,<br>for the tourist-first era</h2>
+      <p>EPAX is Mongolia's digital back office for hotels, restaurants, and touring companies — bilingual in Mongolian and English, priced at less than one part-time hire, month-to-month with no lock-in.</p>
+    </div>
+    <div class="seg-grid">
+      <div class="seg">
+        <div class="seg-lbl">Hotels &amp; Resorts</div>
+        <div class="seg-t">Tourists search and search — and your hotel never comes up.</div>
+        <p class="seg-d">The average hotel in Mongolia runs at 30% occupancy. The gap to 60% isn't a product problem — it's a visibility problem. We fix it.</p>
+        <div class="seg-stat">30%</div>
+        <div class="seg-stat-l">average occupancy — far too low</div>
+        <a href="#pricing" onclick="setSeg('hotel')">View offer
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7h9M8 3.5 11.5 7 8 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="seg">
+        <div class="seg-lbl">Restaurants &amp; Cafés</div>
+        <div class="seg-t">Tourists walk right past your door and eat somewhere else.</div>
+        <p class="seg-d">Foreign visitors choose where to eat on Google Maps and Instagram. If you're not there in English — photos, reviews, readable menu — they keep walking.</p>
+        <div class="seg-stat">90%</div>
+        <div class="seg-stat-l">of tourists search Google before choosing</div>
+        <a href="#pricing" onclick="setSeg('restaurant')">View offer
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7h9M8 3.5 11.5 7 8 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="seg">
+        <div class="seg-lbl">Touring Companies</div>
+        <div class="seg-t">Your tours are extraordinary. Tourists just can't find you.</div>
+        <p class="seg-d">Travelers book Mongolia 3–6 months ahead, online. No English presence and slow replies means they book a competitor. One missed booking is $3,000–$6,000 gone.</p>
+        <div class="seg-stat">$4,500</div>
+        <div class="seg-stat-l">average booking value</div>
+        <a href="#pricing" onclick="setSeg('tour')">View offer
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7h9M8 3.5 11.5 7 8 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="stat-band">
+      <div class="sb"><div class="n">809k</div><div class="l">foreign tourists in Mongolia — 2024 record</div></div>
+      <div class="sb"><div class="n">$1.6B</div><div class="l">tourism revenue, growing 33% per year</div></div>
+      <div class="sb"><div class="n">2M</div><div class="l">tourist target by 2030 — the market is growing</div></div>
+      <div class="sb"><div class="n">24h</div><div class="l">maximum reply time on any guest inquiry</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TWIN CTA ============ -->
+<section id="twin">
+  <div class="wrap">
+    <div class="twin-grid">
+      <div class="twin-c">
+        <span class="twin-badge">Free · Done in 24 hours</span>
+        <h3 class="twin-h">The free audit<span>See what tourists see</span></h3>
+        <a href="#cta" class="pill pill-dark">Request Audit</a>
+      </div>
+      <div class="twin-c">
+        <span class="twin-badge">Zero risk</span>
+        <h3 class="twin-h">The EPAX guarantee<span>Month one fails, month two is free</span></h3>
+        <a href="#services" class="pill pill-gray">How it works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="pr-head reveal">
+      <h2 class="sec-h2">Simple monthly pricing.<br><span class="lead-gray">Cancel anytime, no questions.</span></h2>
+      <div class="ptabs">
+        <button class="ptab on" data-seg="hotel" onclick="setSeg('hotel',this)">Hotels</button>
+        <button class="ptab" data-seg="restaurant" onclick="setSeg('restaurant',this)">Restaurants</button>
+        <button class="ptab" data-seg="tour" onclick="setSeg('tour',this)">Touring</button>
+      </div>
+    </div>
+
+    <!-- HOTELS -->
+    <div class="pgrid show" id="pg-hotel">
+      <div class="plan">
+        <span class="plan-name">Starter</span>
+        <div class="plan-price">$200</div>
+        <div class="plan-freq">first month</div>
+        <ul class="plan-feats">
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>3-platform setup</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>4 weeks of content</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly report</li>
+        </ul>
+        <a href="#cta" class="pill pill-gray">Get started</a>
+      </div>
+      <div class="plan ft">
+        <span class="plan-name">Growth<span class="plan-badge">Best value</span></span>
+        <div class="plan-price">$350</div>
+        <div class="plan-freq">per month</div>
+        <ul class="plan-feats">
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Starter</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Guest communication</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Review management</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly growth report</li>
+        </ul>
+        <a href="#cta" class="pill pill-white">Get started</a>
+        <div class="plan-save">Save $250+/mo vs. hiring in-house</div>
+      </div>
+      <div class="plan">
+        <span class="plan-name">Full Ops</span>
+        <div class="plan-price">$500</div>
+        <div class="plan-freq">per month</div>
+        <ul class="plan-feats">
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Growth</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>E-invoice processing</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority response</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Dedicated account lead</li>
+        </ul>
+        <a href="#cta" class="pill pill-gray">Get started</a>
+      </div>
+    </div>
+
+    <!-- RESTAURANTS -->
+    <div class="pgrid" id="pg-restaurant">
+      <div class="plan">
+        <span class="plan-name">Starter</span>
+        <div class="plan-price">$150</div>
+        <div class="plan-freq">first month</div>
+        <ul class="plan-feats">
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Google Maps optimization</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>4 weeks of content</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>English menu online</li>
+        </ul>
+        <a href="#cta" class="pill pill-gray">Get started</a>
+      </div>
+      <div class="plan ft">
+        <span class="plan-name">Growth<span class="plan-badge">Best value</span></span>
+        <div class="plan-price">$250</div>
+        <div class="plan-freq">per month</div>
+        <ul class="plan-feats">
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Starter</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Review management</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Message handling</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly report</li>
+        </ul>
+        <a href="#cta" class="pill pill-white">Get started</a>
+        <div class="plan-save">Save $250+/mo vs. hiring in-house</div>
+      </div>
+      <div class="plan">
+        <span class="plan-name">Full Ops</span>
+        <div class="plan-price">$350</div>
+        <div class="plan-freq">per month</div>
+        <ul class="plan-feats">
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Growth</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>TripAdvisor setup</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>E-invoice processing</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Dedicated account lead</li>
+        </ul>
+        <a href="#cta" class="pill pill-gray">Get started</a>
+      </div>
+    </div>
+
+    <!-- TOURING -->
+    <div class="pgrid" id="pg-tour">
+      <div class="plan">
+        <span class="plan-name">Starter</span>
+        <div class="plan-price">$250</div>
+        <div class="plan-freq">first month</div>
+        <ul class="plan-feats">
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>3-platform setup</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>4 weeks of tour content</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly report</li>
+        </ul>
+        <a href="#cta" class="pill pill-gray">Get started</a>
+      </div>
+      <div class="plan ft">
+        <span class="plan-name">Growth<span class="plan-badge">Best value</span></span>
+        <div class="plan-price">$450</div>
+        <div class="plan-freq">per month</div>
+        <ul class="plan-feats">
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Starter</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Inquiry handling in English</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Review management</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly growth report</li>
+        </ul>
+        <a href="#cta" class="pill pill-white">Get started</a>
+        <div class="plan-save">1 extra booking pays for months</div>
+      </div>
+      <div class="plan">
+        <span class="plan-name">Full Ops</span>
+        <div class="plan-price">$700</div>
+        <div class="plan-freq">per month</div>
+        <ul class="plan-feats">
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Growth</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>E-invoice processing</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority response SLA</li>
+          <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="m2.5 7.5 3 3 6-7" stroke="#042C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Dedicated account lead</li>
+        </ul>
+        <a href="#cta" class="pill pill-gray">Get started</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ CLIENT STORIES ============ -->
+<section id="stories">
+  <div class="wrap">
+    <div class="st-head reveal">
+      <h2 class="sec-h2">Client stories</h2>
+      <a href="#cta" class="pill pill-gray">Work with us</a>
+    </div>
+    <div class="st-grid">
+      <div class="story">
+        <div class="st-stars">★★★★★</div>
+        <p class="st-q">"Within three weeks of EPAX setting up our Google Maps profile, we had our first direct booking from a German tourist who found us through the map. That had never happened before."</p>
+        <div class="st-a"><span class="st-av">B</span><div><div class="st-n">Baatarsüren D.</div><div class="st-r">GM · Boutique Hotel, UB</div></div></div>
+      </div>
+      <div class="story">
+        <div class="st-stars">★★★★★</div>
+        <p class="st-q">"We had a two-star Google review from a foreign tourist that was hurting us. EPAX responded professionally in English and the tourist updated it to four stars. Complete game changer."</p>
+        <div class="st-a"><span class="st-av">O</span><div><div class="st-n">Oyunbileg T.</div><div class="st-r">Owner · Restaurant Group, UB</div></div></div>
+      </div>
+      <div class="story">
+        <div class="st-stars">★★★★★</div>
+        <p class="st-q">"Foreign inquiries used to sit unanswered for days because nobody had the English confidence. EPAX handles every one within hours. We haven't missed a booking lead since."</p>
+        <div class="st-a"><span class="st-av">E</span><div><div class="st-n">Enkhjargal S.</div><div class="st-r">Co-founder · Travel &amp; Tours Agency</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section id="cta" style="padding-bottom:2rem;">
+  <div class="wrap">
+    <div class="black-card">
+      <div class="stars" data-stars="120"></div>
+      <div style="position:relative;padding:clamp(4rem,9vw,7.5rem) clamp(2rem,6vw,5.5rem);">
+        <h2 class="cta-h"><span id="typeCta"></span><span class="caret" id="caretCta" style="visibility:hidden;"></span></h2>
+        <div class="cta-btns">
+          <a href="mailto:hello@epax.mn" class="pill pill-white">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.8" y="3" width="12.4" height="10" rx="1.6" stroke="currentColor" stroke-width="1.5"/><path d="m2.5 4.5 5.5 4 5.5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            hello@epax.mn
+          </a>
+          <a href="tel:+97699999999" class="pill pill-ghost">+976 9999 9999</a>
+        </div>
+        <p class="cta-note">Free audit, delivered in 24 hours, in English and Mongolian. We show you exactly what foreign tourists see when they search for you — no pitch, no commitment. We limit new clients to 5 per quarter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="ft-top">
+      <div class="ft-h">Peace in every process</div>
+      <div>
+        <div class="ft-col-t">Services</div>
+        <ul class="ft-links">
+          <li><a href="#services">Platform Presence</a></li>
+          <li><a href="#services">Social Media</a></li>
+          <li><a href="#services">Guest Communications</a></li>
+          <li><a href="#services">Reports &amp; Invoicing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-col-t">Who We Serve</div>
+        <ul class="ft-links">
+          <li><a href="#who">Hotels &amp; Resorts</a></li>
+          <li><a href="#who">Restaurants &amp; Cafés</a></li>
+          <li><a href="#who">Touring Companies</a></li>
+          <li><a href="#who">Ger Camps</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-col-t">Contact</div>
+        <ul class="ft-links">
+          <li><a href="mailto:hello@epax.mn">hello@epax.mn</a></li>
+          <li><a href="tel:+97699999999">+976 9999 9999</a></li>
+          <li><a href="#">Ulaanbaatar, Mongolia</a></li>
+          <li><a href="#">@epax.ub</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="ft-giant" aria-hidden="true">EPA<svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <line x1="3.5" y1="3.5" x2="28.5" y2="28.5" stroke="#042C53" stroke-width="4.4" stroke-linecap="round"/>
+      <line x1="28.5" y1="3.5" x2="3.5" y2="28.5" stroke="#042C53" stroke-width="4.4" stroke-linecap="round"/>
+      <line x1="16" y1="1.4" x2="16" y2="30.6" stroke="#C9A84C" stroke-width="3" stroke-linecap="round"/>
+      <line x1="1.4" y1="16" x2="30.6" y2="16" stroke="#C9A84C" stroke-width="3" stroke-linecap="round"/>
+    </svg></div>
+  <div class="wrap">
+    <div class="ft-bot">
+      <span class="ft-brand">
+        <svg width="21" height="21" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <line x1="8" y1="8" x2="24" y2="24" stroke="#042C53" stroke-width="3.2" stroke-linecap="round"/>
+          <line x1="24" y1="8" x2="8" y2="24" stroke="#042C53" stroke-width="3.2" stroke-linecap="round"/>
+          <line x1="16" y1="4" x2="16" y2="28" stroke="#C9A84C" stroke-width="2.6" stroke-linecap="round"/>
+          <line x1="4" y1="16" x2="28" y2="16" stroke="#C9A84C" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+        EPAX
+      </span>
+      <div class="ft-legal">
+        <span>© 2026 EPAX ХХК. All rights reserved.</span>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <span style="font-style:italic;">PAX — Latin for peace.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<canvas id="trail" aria-hidden="true"></canvas>
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script src="node_modules/gsap/dist/ScrollTrigger.min.js"></script>
+<script src="node_modules/lenis/dist/lenis.min.js"></script>
+<script>
+/* ---------- always open at the top ----------
+   The browser restores the previous scroll position on reload/return,
+   which lands visitors mid-page. Take over restoration and pin to top
+   (direct #section links still work — we only reset when there's no hash). */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if (!location.hash){
+  window.scrollTo(0, 0);
+  addEventListener('pageshow', () => window.scrollTo(0, 0));
+}
+
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- nav ---------- */
+const nav = document.getElementById('nav'); /* 'scrolled' state is set by the RAF engine */
+function toggleNav(){
+  document.getElementById('burger').classList.toggle('open');
+  document.getElementById('navMobile').classList.toggle('open');
+}
+
+/* ---------- typing headlines (language-aware) ---------- */
+let LANG = 'en';
+const TYPES = {
+  hero: {en:"Foreign tourists can't find you. We fix that.", mn:"Гадаад жуулчид таныг олж чадахгүй байна. Бид үүнийг засна."},
+  cta:  {en:'Get found. Get booked. Grow.', mn:'Олдоорой. Захиалга аваарай. Өсөөрэй.'}
+};
+const typeDone = {hero:false, cta:false};
+function typeInto(spanId, caretId, key, speed){
+  const span = document.getElementById(spanId);
+  const caret = document.getElementById(caretId);
+  caret.style.visibility = 'visible';
+  if (REDUCE){ span.textContent = TYPES[key][LANG]; typeDone[key] = true; return; }
+  let i = 0;
+  (function tick(){
+    const text = TYPES[key][LANG];
+    if (i <= text.length){
+      span.textContent = text.slice(0, i++);
+      setTimeout(tick, speed + Math.random()*30);
+    } else typeDone[key] = true;
+  })();
+}
+addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => typeInto('typeHero','caretHero','hero', 42), 350);
+});
+let ctaTyped = false; /* CTA typing is triggered by the motion engine */
+
+/* ---------- confetti sprinkles (drifting) ---------- */
+(function(){
+  const host = document.getElementById('confettiHero');
+  const colors = ['#4a8fdd','#85B7EB','#C9A84C','#042C53','#2f6bb0','#e0c47e'];
+  for (let i = 0; i < 90; i++){
+    const s = document.createElement('i');
+    const w = 2 + Math.random()*2.5, h = 6 + Math.random()*8;
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${w}px;height:${h}px;
+      background:${colors[Math.random()*colors.length|0]};opacity:${.35+Math.random()*.5};
+      --rot:${Math.random()*360}deg;--fd:${5+Math.random()*6}s;--fdel:${-Math.random()*8}s;`;
+    host.appendChild(s);
+  }
+})();
+
+/* ---------- hero floating dots: mouse-reactive canvas ----------
+   pointermove only records x/y; all physics + drawing run inside
+   the single gsap.ticker loop (same architecture as the star trail). */
+(function(){
+  const PARTICLE_COUNT = 80;    /* dot count */
+  const REPEL_RADIUS   = 120;   /* px around cursor that pushes dots */
+  const LERP           = 0.08;  /* chase factor — the lag is the feel */
+  const RING_MODE      = false; /* true = slowly rotating Antigravity-style ring */
+
+  const DOT_R = 2, COLOR = '#1a1a4d';
+  const REPEL_FORCE = 26, REPEL_MAX = 90;      /* push = min(MAX, (R/d - 1) * FORCE) */
+  const canvas = document.getElementById('heroDots');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const FINE = matchMedia('(pointer:fine)').matches;
+
+  let W = 0, H = 0, DPR = 1;
+  function size(){
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (w === W && h === H && dpr === DPR) return false;  /* guard: never react to our own attribute writes */
+    W = w; H = h; DPR = dpr;
+    canvas.width  = Math.max(1, Math.round(W * DPR));
+    canvas.height = Math.max(1, Math.round(H * DPR));
+    return true;
+  }
+  size();
+
+  /* homes are stored as fractions so resize keeps the layout and the
+     dots just glide to their re-scaled homes */
+  const dots = Array.from({length: PARTICLE_COUNT}, (_, i) => {
+    const d = {
+      fx: .03 + Math.random() * .94,
+      fy: .03 + Math.random() * .94,
+      a0: (i / PARTICLE_COUNT) * Math.PI * 2 + Math.random() * .25,  /* ring angle */
+      rr: .82 + Math.random() * .36,                                  /* ring radius spread */
+      da: 5 + Math.random() * 9,      /* drift amplitude px */
+      ds: .18 + Math.random() * .4,   /* drift speed rad/s */
+      ph: Math.random() * Math.PI * 2,
+      o:  .1 + Math.random() * .9,
+      x: 0, y: 0
+    };
+    return d;
+  });
+
+  function homeOf(d, t){
+    if (RING_MODE){
+      const a = d.a0 + t * .05;                       /* slow global rotation */
+      const rad = Math.min(W, H) * .38 * d.rr;
+      return [W / 2 + Math.cos(a) * rad, H * .48 + Math.sin(a) * rad * .55];
+    }
+    return [d.fx * W, d.fy * H];
+  }
+  dots.forEach(d => { const [hx, hy] = homeOf(d, 0); d.x = hx; d.y = hy; });
+
+  function draw(d){
+    ctx.globalAlpha = d.o;
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, DOT_R, 0, 6.2832);
+    ctx.fill();
+  }
+  function drawStatic(){
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = COLOR;
+    dots.forEach(d => { const [hx, hy] = homeOf(d, 0); d.x = hx; d.y = hy; draw(d); });
+    ctx.globalAlpha = 1;
+  }
+
+  /* reduced motion: static constellation, no listeners, no loop */
+  if (REDUCE){
+    drawStatic();
+    new ResizeObserver(() => { if (size()) drawStatic(); }).observe(canvas);
+    return;
+  }
+
+  new ResizeObserver(size).observe(canvas);
+
+  /* pointer state — listeners ONLY record, never animate */
+  const P = {x: 0, y: 0, seen: false};
+  addEventListener('pointermove', e => { P.x = e.clientX; P.y = e.clientY; P.seen = true; }, {passive:true});
+  document.addEventListener('mouseleave', () => { P.seen = false; });  /* cursor left window → glide home */
+
+  /* pause all work while the hero is off-screen */
+  let visible = true;
+  new IntersectionObserver(en => { visible = en[0].isIntersecting; }).observe(canvas);
+
+  function dotsFrame(now){
+    if (!visible || !W) return;
+    const t = now * .001;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = COLOR;
+    const active = FINE && P.seen;
+    let mx = 0, my = 0;
+    if (active){
+      const r = canvas.getBoundingClientRect();
+      mx = P.x - r.left; my = P.y - r.top;
+    }
+    for (const d of dots){
+      const [hx, hy] = homeOf(d, t);
+      /* ambient drift around home — alive with no mouse input */
+      let tx = hx + Math.cos(t * d.ds + d.ph) * d.da;
+      let ty = hy + Math.sin(t * d.ds * .9 + d.ph * 1.7) * d.da;
+      /* cursor repulsion, force inversely proportional to distance */
+      if (active){
+        const dx = tx - mx, dy = ty - my;
+        const dist = Math.hypot(dx, dy);
+        if (dist < REPEL_RADIUS && dist > .5){
+          const f = Math.min(REPEL_MAX, (REPEL_RADIUS / dist - 1) * REPEL_FORCE);
+          tx += dx / dist * f;
+          ty += dy / dist * f;
+        }
+      }
+      /* dots CHASE their target — never snap */
+      d.x += (tx - d.x) * LERP;
+      d.y += (ty - d.y) * LERP;
+      draw(d);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* ride the site's single RAF loop; standalone rAF only if gsap is absent */
+  if (window.gsap){
+    gsap.ticker.add(() => dotsFrame(performance.now()));
+  } else {
+    const loop = now => { dotsFrame(now); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  }
+})();
+
+/* ---------- starfields (twinkling) ---------- */
+document.querySelectorAll('.stars').forEach(field => {
+  const n = +field.dataset.stars || 70;
+  for (let i = 0; i < n; i++){
+    const s = document.createElement('i');
+    const big = Math.random() < .3;
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;
+      width:${big?3:1.6}px;height:${big?7:3}px;
+      background:${Math.random()<.14?'#C9A84C':(Math.random()<.6?'#7fb0e8':'#e9f0f7')};--o:${.25+Math.random()*.6};
+      --td:${2.4+Math.random()*4}s;--tdel:${-Math.random()*5}s;
+      transform:rotate(${Math.random()*360}deg);`;
+    field.appendChild(s);
+  }
+});
+
+/* ---------- icon arc ---------- */
+let arcSeen = false;
+(function(){
+  const row = document.getElementById('arcRow');
+  const icons = [
+    '<circle cx="12" cy="10" r="3.2"/><path d="M12 21s7-7.1 7-11a7 7 0 1 0-14 0c0 3.9 7 11 7 11Z"/>',
+    '<path d="m12 3 2.5 5.4 5.9.6-4.4 4 1.2 5.8L12 15.9 6.8 18.8 8 13 3.6 9l5.9-.6L12 3Z"/>',
+    '<path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3 12 12"/><path d="M16 3h5v5"/>',
+    '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/>',
+    '<path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/>',
+    '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-3.5 4-3.5 14 0 18 3.5-4 3.5-14 0-18Z"/>',
+    '<path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v10Z"/>',
+    '<rect x="4" y="5" width="16" height="16" rx="2.5"/><path d="M8 3v4m8-4v4M4 11h16"/>',
+    '<rect x="2.5" y="6" width="19" height="12.5" rx="2.5"/><circle cx="12" cy="12" r="3.4"/>',
+    '<path d="M12 21a9 9 0 1 0-9-9c0 1.8.5 3.4 1.4 4.8L3 21l4.4-1.3A9 9 0 0 0 12 21Z"/>',
+    '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/>',
+    '<path d="M20 6 9 17l-5-5"/>',
+    '<path d="M7 11V7a5 5 0 0 1 10 0v4"/><rect x="4" y="11" width="16" height="10" rx="2.5"/>'
+  ];
+  function build(){
+    row.innerHTML = '';
+    const W = row.clientWidth;
+    const small = W < 640;
+    const n = small ? 7 : icons.length;
+    const H = row.clientHeight;
+    for (let i = 0; i < n; i++){
+      const t = i/(n-1);
+      const size = (small?54:72) + Math.sin(Math.PI*t)*(small?10:22);
+      const x = t*(W-size);
+      const y = (H-size) - Math.sin(Math.PI*t)*(H*.52);
+      const c = document.createElement('span');
+      c.className = 'chip' + (arcSeen ? ' in' : '');
+      c.style.cssText = `left:${x}px;top:${y}px;width:${size}px;height:${size}px;transition-delay:${i*55}ms;`;
+      c.innerHTML = `<span class="chip-b" style="--bd:${4.5+Math.random()*3}s;--bdel:${-Math.random()*5}s;">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${icons[i%icons.length]}</svg></span>`;
+      row.appendChild(c);
+    }
+  }
+  build();
+  addEventListener('resize', build);
+  window.revealArc = () => {
+    arcSeen = true;
+    row.querySelectorAll('.chip').forEach(c => c.classList.add('in'));
+  };
+})();
+
+/* ---------- word scrub (scroll reveal of paragraphs) ---------- */
+const SCRUB_MN = [
+  'Google Maps, TripAdvisor, Booking.com — бүгдийг англи хэл дээр бүрэн тохируулж, оновчилно. 809,000 гадаад жуулчин хоноглох, хооллох, аялах газраа хайхад таны бизнес хамгийн түрүүнд олдоно.',
+  'Instagram, Facebook дээр долоо хоног бүр англи хэлээр контент — зөвхөн дотоодын лайк биш, олон улсын зочдод зориулагдсан. Хоол, тал нутаг, соёл, уур амьсгал. Аялагчдыг «Би энд заавал очно» гэж хэлүүлдэг контент.',
+  'Бүх мессеж, сэтгэгдэл, лавлагаанд чөлөөтэй англи хэлээр — хурдан хариулна. Хүлээж суусан зочин ч, хариугүй үлдсэн жуулчин ч, чимээгүйгээс алдсан захиалга ч байхгүй. Сайн зохицуулсан муу сэтгэгдэл итгэлийн дохио болдог.',
+  'Таны танигдах байдал, лавлагаа, өсөлтийн тухай ойлгомжтой сарын тайлан — мөн и-баримт боловсруулалт, бүгд баримтжуулсан, цэгцтэй. EPAX юу хийж, танд юу авчирсныг та үргэлж тодорхой мэднэ.'
+];
+const scrubEls = [...document.querySelectorAll('[data-scrub]')];
+const scrubTexts = scrubEls.map((p,i) => ({en: p.textContent.trim(), mn: SCRUB_MN[i] || p.textContent.trim()}));
+function scrub(){
+  const vh = innerHeight;
+  scrubEls.forEach(p => {
+    const r = p.getBoundingClientRect();
+    const start = vh*.88, end = vh*.38;
+    const prog = Math.min(1, Math.max(0, (start - r.top) / (start - end)));
+    const words = p.children;
+    const lit = Math.round(prog * words.length);
+    for (let i = 0; i < words.length; i++) words[i].classList.toggle('on', i < lit);
+  });
+}
+function buildScrub(){
+  scrubEls.forEach((p,i) => {
+    p.innerHTML = scrubTexts[i][LANG].split(/\s+/).map(w => `<span class="w">${w}</span>`).join(' ');
+  });
+  scrub();
+}
+buildScrub(); /* scrub() is called from the RAF engine whenever the scroll position changes */
+
+/* ---------- pricing tabs ---------- */
+function setSeg(id, btn){
+  document.querySelectorAll('.pgrid').forEach(g => g.classList.remove('show'));
+  const grid = document.getElementById('pg-'+id);
+  grid.classList.add('show');
+  document.querySelectorAll('.ptab').forEach(t => t.classList.toggle('on', t.dataset.seg === id));
+  if (window.revealGrid){
+    revealGrid(grid);
+  } else {
+    grid.classList.remove('anim-in');
+    void grid.offsetWidth;
+    grid.classList.add('anim-in');
+  }
+}
+
+/* ---------- staggered grids (prep only — revealed by the motion engine) ---------- */
+document.querySelectorAll('.seg-grid,.stat-band,.st-grid,.twin-grid,.pgrid,.hero-btns').forEach(grid => {
+  [...grid.children].forEach((c,i) => {
+    c.classList.add('anim-child');
+    c.style.transitionDelay = (i * 90) + 'ms';
+  });
+});
+document.querySelectorAll('.chat-body > *').forEach((c,i) => {
+  c.classList.add('anim-child');
+  c.style.transitionDelay = (i * 550) + 'ms';
+});
+
+/* ---------- stat count-up (triggered by the motion engine) ---------- */
+const countEase = t => 1 - Math.pow(1 - t, 3);
+function countUp(el){
+  const m = el.textContent.trim().match(/^(\$?)(\d+(?:\.\d+)?)(.*)$/);
+  if (!m) return;
+  const [, pre, numStr, suf] = m;
+  if (/^[,\d]/.test(suf)) return;
+  const target = parseFloat(numStr);
+  const dec = numStr.includes('.') ? 1 : 0;
+  const t0 = performance.now(), dur = 1400;
+  (function tick(now){
+    const p = Math.min(1, (now - t0) / dur);
+    el.textContent = pre + (target * countEase(p)).toFixed(dec) + suf;
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+
+/* ---------- EN / MN language toggle ---------- */
+const I18N = {
+  /* nav */
+  "Services": "Үйлчилгээ",
+  "Who We Serve": "Хэнд зориулагдсан",
+  "Pricing": "Үнэ",
+  "Clients": "Харилцагчид",
+  "Free Audit": "Үнэгүй аудит",
+  "Free Audit ↗": "Үнэгүй аудит ↗",
+  /* hero */
+  "Get a Free Audit": "Үнэгүй аудит авах",
+  "Explore services": "Үйлчилгээ үзэх",
+  /* services */
+  "Platform presence": "Платформ дээрх байр суурь",
+  "English social media": "Англи хэлт сошиал медиа",
+  "Guest communications": "Зочидтой харилцах",
+  "Reports & invoicing": "Тайлан ба нэхэмжлэх",
+  "See pricing": "Үнэ харах",
+  "Mia · Booking inquiry": "Mia · Захиалгын лавлагаа",
+  "● Handled by EPAX": "● EPAX хариуцаж байна",
+  "Replied in 7 minutes": "7 минутын дотор хариулсан",
+  "EPAX Monthly Report": "EPAX сарын тайлан",
+  "Visibility · Inquiries · Reviews · Growth": "Танигдалт · Лавлагаа · Сэтгэгдэл · Өсөлт",
+  "Map views +142%": "Газрын зурагт үзэлт +142%",
+  "21 inquiries answered": "21 лавлагаанд хариулсан",
+  "0 missed leads": "0 алдсан боломж",
+  /* who we serve */
+  "Built for hospitality,": "Зочлох үйлчилгээнд зориулж,",
+  "for the tourist-first era": "жуулчны эрин үед бүтээв",
+  "EPAX is Mongolia's digital back office for hotels, restaurants, and touring companies — bilingual in Mongolian and English, priced at less than one part-time hire, month-to-month with no lock-in.": "EPAX бол Монголын зочид буудал, ресторан, тур компаниудын дижитал ар алба — монгол, англи хоёр хэлтэй, хагас цагийн нэг ажилтнаас ч хямд, сар бүрийн сунгалттай, урт гэрээгээр хүлдэггүй.",
+  "Hotels & Resorts": "Зочид буудал ба резорт",
+  "Tourists search and search — and your hotel never comes up.": "Жуулчид хайгаад л байдаг — таны буудал хэзээ ч гарч ирдэггүй.",
+  "The average hotel in Mongolia runs at 30% occupancy. The gap to 60% isn't a product problem — it's a visibility problem. We fix it.": "Монголын зочид буудлын дундаж дүүргэлт ердөө 30%. 60% хүрэх зөрүү нь бүтээгдэхүүний биш — танигдах байдлын асуудал. Бид үүнийг шийднэ.",
+  "average occupancy — far too low": "дундаж дүүргэлт — хэт бага",
+  "View offer": "Санал үзэх",
+  "Restaurants & Cafés": "Ресторан ба кафе",
+  "Tourists walk right past your door and eat somewhere else.": "Жуулчид таны хаалганы хажуугаар өнгөрч, өөр газар хооллодог.",
+  "Foreign visitors choose where to eat on Google Maps and Instagram. If you're not there in English — photos, reviews, readable menu — they keep walking.": "Гадаад зочид хаана хооллохоо Google Maps, Instagram-аас шийддэг. Та тэнд англи хэлээр — зураг, сэтгэгдэл, ойлгомжтой цэстэй — байхгүй бол тэд цааш алхдаг.",
+  "of tourists search Google before choosing": "жуулчид сонгохоосоо өмнө Google-ээс хайдаг",
+  "Touring Companies": "Тур компаниуд",
+  "Your tours are extraordinary. Tourists just can't find you.": "Таны аялалууд гайхалтай. Гэвч жуулчид таныг олж чадахгүй байна.",
+  "Travelers book Mongolia 3–6 months ahead, online. No English presence and slow replies means they book a competitor. One missed booking is $3,000–$6,000 gone.": "Аялагчид Монголын аяллаа 3–6 сарын өмнө онлайнаар захиалдаг. Англи хэлээр олдохгүй, хариулт удаан бол тэд өрсөлдөгчөөс захиалдаг. Нэг алдсан захиалга гэдэг ₮10.7–21.5 сая алга болно гэсэн үг.",
+  "average booking value": "захиалгын дундаж үнэ",
+  /* stat band */
+  "foreign tourists in Mongolia — 2024 record": "гадаад жуулчин Монголд — 2024 оны рекорд",
+  "tourism revenue, growing 33% per year": "аялал жуулчлалын орлого — жилд 33% өсөлттэй",
+  "tourist target by 2030 — the market is growing": "2030 оны жуулчны зорилт — зах зээл өсөж байна",
+  "maximum reply time on any guest inquiry": "аливаа лавлагаанд хариулах дээд хугацаа",
+  /* twin cta */
+  "Free · Done in 24 hours": "Үнэгүй · 24 цагт бэлэн",
+  "The free audit": "Үнэгүй аудит",
+  "See what tourists see": "Жуулчдын хардагийг хараарай",
+  "Request Audit": "Аудит хүсэх",
+  "Zero risk": "Эрсдэлгүй",
+  "The EPAX guarantee": "EPAX баталгаа",
+  "Month one fails, month two is free": "Эхний сар үр дүнгүй бол дараагийн сар үнэгүй",
+  "How it works": "Хэрхэн ажилладаг вэ",
+  /* pricing */
+  "Simple monthly pricing.": "Энгийн сарын үнэ.",
+  "Cancel anytime, no questions.": "Хүссэн үедээ цуцална, асуулт байхгүй.",
+  "Hotels": "Зочид буудал",
+  "Restaurants": "Ресторан",
+  "Touring": "Тур компани",
+  "Starter": "Стартер",
+  "Growth": "Өсөлт",
+  "Full Ops": "Бүрэн үйл ажиллагаа",
+  "Best value": "Хамгийн ашигтай",
+  "first month": "эхний сар",
+  "per month": "сар бүр",
+  "3-platform setup": "3 платформын тохиргоо",
+  "4 weeks of content": "4 долоо хоногийн контент",
+  "Monthly report": "Сарын тайлан",
+  "Get started": "Эхлэх",
+  "Everything in Starter": "Стартер багцын бүх зүйл",
+  "Guest communication": "Зочидтой харилцах",
+  "Review management": "Сэтгэгдлийн менежмент",
+  "Monthly growth report": "Сарын өсөлтийн тайлан",
+  "Save $250+/mo vs. hiring in-house": "Ажилтан авахаас сард ₮895,500+ хэмнэнэ",
+  "Everything in Growth": "Өсөлт багцын бүх зүйл",
+  "E-invoice processing": "И-баримт боловсруулалт",
+  "Priority response": "Тэргүүн ээлжийн хариу",
+  "Dedicated account lead": "Хариуцсан менежертэй",
+  "Google Maps optimization": "Google Maps оновчлол",
+  "English menu online": "Англи цэс онлайнаар",
+  "Message handling": "Мессеж хариулалт",
+  "TripAdvisor setup": "TripAdvisor тохиргоо",
+  "4 weeks of tour content": "4 долоо хоногийн аялалын контент",
+  "Inquiry handling in English": "Англи хэлээр лавлагаа хариулах",
+  "1 extra booking pays for months": "Нэмэлт 1 захиалга хэдэн сарын төлбөрийг нөхнө",
+  "Priority response SLA": "Тэргүүн ээлжийн хариу (SLA)",
+  /* stories */
+  "Client stories": "Харилцагчдын түүх",
+  "Work with us": "Бидэнтэй хамтрах",
+  "\"Within three weeks of EPAX setting up our Google Maps profile, we had our first direct booking from a German tourist who found us through the map. That had never happened before.\"": "«EPAX манай Google Maps профайлыг тохируулснаас хойш гурван долоо хоногийн дотор газрын зургаар биднийг олсон герман жуулчнаас анхны шууд захиалгаа авлаа. Ийм зүйл урьд нь хэзээ ч болж байгаагүй.»",
+  "\"We had a two-star Google review from a foreign tourist that was hurting us. EPAX responded professionally in English and the tourist updated it to four stars. Complete game changer.\"": "«Гадаад жуулчны үлдээсэн 2 одтой Google сэтгэгдэл бидэнд хохирол учруулж байлаа. EPAX англи хэлээр мэргэжлийн түвшинд хариулснаар жуулчин үнэлгээгээ 4 од болгож өөрчилсөн. Бүхнийг өөрчилсөн явдал байсан.»",
+  "\"Foreign inquiries used to sit unanswered for days because nobody had the English confidence. EPAX handles every one within hours. We haven't missed a booking lead since.\"": "«Англи хэлэнд итгэлтэй хүнгүйгээс гадаад лавлагаанууд хоногоор хариугүй хэвтдэг байсан. Одоо EPAX бүгдийг нь хэдхэн цагт хариулдаг. Түүнээс хойш нэг ч захиалгын боломж алдаагүй.»",
+  "GM · Boutique Hotel, UB": "Захирал · Бутик зочид буудал, УБ",
+  "Owner · Restaurant Group, UB": "Эзэмшигч · Рестораны групп, УБ",
+  "Co-founder · Travel & Tours Agency": "Хамтран үүсгэн байгуулагч · Аяллын агентлаг",
+  /* final cta */
+  "Free audit, delivered in 24 hours, in English and Mongolian. We show you exactly what foreign tourists see when they search for you — no pitch, no commitment. We limit new clients to 5 per quarter.": "Үнэгүй аудитыг 24 цагийн дотор англи, монгол хэлээр хүргэнэ. Гадаад жуулчид таныг хайхад яг юу хардагийг бид харуулна — ямар ч тулгасан борлуулалт, амлалт шаардахгүй. Шинэ харилцагчдыг улирал бүр 5-аар хязгаарладаг.",
+  /* footer */
+  "Peace in every process": "Үйл явц бүрд амар амгалан",
+  "Platform Presence": "Платформ дээрх байр суурь",
+  "Social Media": "Сошиал медиа",
+  "Guest Communications": "Зочидтой харилцах",
+  "Reports & Invoicing": "Тайлан ба нэхэмжлэх",
+  "Ger Camps": "Гэр баазууд",
+  "Contact": "Холбоо барих",
+  "Ulaanbaatar, Mongolia": "Улаанбаатар, Монгол",
+  "© 2026 EPAX ХХК. All rights reserved.": "© 2026 EPAX ХХК. Бүх эрх хамгаалагдсан.",
+  "Privacy": "Нууцлалын бодлого",
+  "Terms": "Үйлчилгээний нөхцөл",
+  "PAX — Latin for peace.": "PAX — латин хэлээр «амар амгалан»."
+};
+
+const i18nItems = [];
+{
+  document.body.normalize(); /* merge text nodes split by HTML streaming */
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(n){
+      if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = n.parentElement;
+      if (!p || p.closest('script,style,[data-no-i18n],[data-scrub],.lang-tg,.ft-giant')) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const found = [];
+  let n;
+  while (n = walker.nextNode()){ if (I18N[n.nodeValue.trim()]) found.push(n); }
+  /* wrap each match in a span so translations survive any DOM re-splitting */
+  found.forEach(node => {
+    const key = node.nodeValue.trim();
+    const span = document.createElement('span');
+    span.textContent = node.nodeValue;
+    node.parentNode.replaceChild(span, node);
+    i18nItems.push({el:span, en:node.nodeValue, mn:node.nodeValue.replace(key, I18N[key])});
+  });
+}
+/* ---------- USD → MNT conversion (shown when MN is selected) ---------- */
+const USD_TO_MNT = 3582; /* update when the exchange rate moves */
+function toMNT(usd){
+  const v = usd * USD_TO_MNT;
+  return v >= 10000000
+    ? '₮' + (v / 1000000).toLocaleString('en-US', {maximumFractionDigits: 1}) + ' сая'
+    : '₮' + v.toLocaleString('en-US');
+}
+const currencyEls = [];
+document.querySelectorAll('.plan-price, .seg-stat').forEach(el => {
+  const m = el.textContent.trim().match(/^\$([\d,]+)$/);
+  if (m) currencyEls.push({el, en: el.textContent.trim(), mn: toMNT(parseInt(m[1].replace(/,/g, ''), 10))});
+});
+
+function setLang(l){
+  LANG = l;
+  document.documentElement.lang = l;
+  document.title = l === 'mn' ? 'EPAX — Үйл явц бүрд амар амгалан' : 'EPAX — Peace in Every Process';
+  document.querySelectorAll('.lang-tg button').forEach(b => b.classList.toggle('on', b.dataset.lang === l));
+  i18nItems.forEach(r => r.el.textContent = r[l]);
+  currencyEls.forEach(c => c.el.textContent = c[l]);
+  buildScrub();
+  if (window.ScrollTrigger) ScrollTrigger.refresh();
+  if (typeDone.hero) document.getElementById('typeHero').textContent = TYPES.hero[l];
+  if (typeDone.cta) document.getElementById('typeCta').textContent = TYPES.cta[l];
+  try{ localStorage.setItem('epax-lang', l); }catch(e){}
+}
+try{ if (localStorage.getItem('epax-lang') === 'mn') setLang('mn'); }catch(e){}
+
+/* ================================================================
+   MOTION ENGINE — exactly ONE RAF loop (gsap.ticker) drives:
+   Lenis smooth scroll, ScrollTrigger, the cursor star trail,
+   the nav state, and the word scrub. No animation is driven
+   directly off mousemove/scroll events — those only record targets.
+   ================================================================ */
+(function(){
+  /* fallback when libs are missing or reduced motion: show everything */
+  const showAll = () => {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    document.querySelectorAll('.seg-grid,.stat-band,.st-grid,.twin-grid,.pgrid,.hero-btns,.chat-body').forEach(g => g.classList.add('anim-in'));
+    if (window.revealArc) revealArc();
+    scrubEls.forEach(p => [...p.children].forEach(w => w.classList.add('on')));
+    if (!ctaTyped){ ctaTyped = true; typeInto('typeCta','caretCta','cta', 46); }
+    addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), {passive:true});
+  };
+  if (!(window.gsap && window.ScrollTrigger) || REDUCE){ showAll(); return; }
+
+  gsap.registerPlugin(ScrollTrigger);
+  /* ScrollTrigger restores the previous scroll position on reload — wipe its
+     scroll memory so visitors always land at the top (see top-of-script reset) */
+  ScrollTrigger.clearScrollMemory('manual');
+  if (!location.hash) window.scrollTo(0, 0);
+  document.documentElement.classList.add('gsap-motion');
+
+  /* ---- (1) Lenis smooth scroll wrapping the whole page ---- */
+  const lenis = window.Lenis ? new Lenis({duration:1.15, smoothWheel:true}) : null;
+  if (lenis){
+    lenis.on('scroll', ScrollTrigger.update);   /* ST rides Lenis's frame — no 2nd loop */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id.length > 1 && document.querySelector(id)){
+          e.preventDefault();
+          lenis.scrollTo(id, {offset:-84, duration:1.4});
+        }
+      });
+    });
+  }
+
+  /* ---- (3) cursor star trail: one canvas; pointermove only records targets ---- */
+  const canvas = document.getElementById('trail');
+  const ctx = canvas.getContext('2d');
+  const FINE = matchMedia('(pointer:fine)').matches;
+  const pointer = {x: innerWidth/2, y: innerHeight/2, seen:false, last:0};
+  addEventListener('pointermove', e => {
+    pointer.x = e.clientX; pointer.y = e.clientY;
+    pointer.seen = true; pointer.last = performance.now();
+  }, {passive:true});
+  let DPR = 1;
+  function sizeCanvas(){
+    DPR = Math.min(2, devicePixelRatio || 1);
+    canvas.width = innerWidth * DPR;
+    canvas.height = innerHeight * DPR;
+  }
+  sizeCanvas();
+  addEventListener('resize', sizeCanvas);
+  const TRAIL_COLORS = ['#C9A84C','#4a8fdd','#85B7EB','#0d3f74'];
+  const N = 16;
+  const parts = Array.from({length:N}, () => ({x: pointer.x, y: pointer.y}));
+  function drawStar(x, y, s, rot, color, alpha){
+    ctx.save();
+    ctx.translate(x, y); ctx.rotate(rot);
+    ctx.globalAlpha = alpha; ctx.strokeStyle = color;
+    ctx.lineWidth = Math.max(1, s * .3); ctx.lineCap = 'round';
+    const d = s * .5;
+    ctx.beginPath();
+    ctx.moveTo(-s, 0); ctx.lineTo(s, 0);
+    ctx.moveTo(0, -s); ctx.lineTo(0, s);
+    ctx.moveTo(-d, -d); ctx.lineTo(d, d);
+    ctx.moveTo(d, -d); ctx.lineTo(-d, d);
+    ctx.stroke();
+    ctx.restore();
+  }
+  function trailFrame(now){
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    if (!FINE || !pointer.seen) return;
+    const idle = now - pointer.last;
+    const fade = Math.max(0, 1 - Math.max(0, idle - 400) / 600);
+    if (fade === 0) return;
+    let tx = pointer.x, ty = pointer.y;
+    for (let i = 0; i < N; i++){
+      const p = parts[i];
+      const t = i / (N - 1);
+      const k = .12 - t * .04;              /* lerp factor: 0.12 head → 0.08 tail */
+      p.x += (tx - p.x) * k;
+      p.y += (ty - p.y) * k;
+      drawStar(p.x, p.y, (1 - t) * 6.5 + 2,
+        now * .0012 * (i % 2 ? 1 : -1) + i,
+        TRAIL_COLORS[i % 4], (1 - t) * .8 * fade);
+      tx = p.x; ty = p.y;
+    }
+  }
+
+  /* ---- THE single RAF loop ---- */
+  let lastScroll = -1;
+  gsap.ticker.add(time => {
+    if (lenis) lenis.raf(time * 1000);      /* Lenis driven by gsap.ticker */
+    const s = lenis ? lenis.scroll : scrollY;
+    if (s !== lastScroll){
+      lastScroll = s;
+      nav.classList.toggle('scrolled', s > 8);
+      scrub();                               /* word reveal reads latest scroll here */
+    }
+    trailFrame(performance.now());
+  });
+  gsap.ticker.lagSmoothing(0);
+
+  /* ---- (2) scroll-reveal popups: fade-up y:40→0, 0.8s power2.out ---- */
+  const FADE_UP = {y:0, autoAlpha:1, duration:.8, ease:'power2.out', clearProps:'transform,opacity,visibility'};
+  gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.fromTo(el, {y:40, autoAlpha:0},
+      {...FADE_UP, scrollTrigger:{trigger:el, start:'top 90%', once:true}});
+  });
+  const staggerReveal = (grid, stagger) => {
+    gsap.fromTo(grid.children, {y:40, autoAlpha:0},
+      {...FADE_UP, stagger, scrollTrigger:{trigger:grid, start:'top 88%', once:true}});
+  };
+  document.querySelectorAll('.seg-grid,.stat-band,.st-grid,.twin-grid,.hero-btns,.pgrid.show').forEach(g => staggerReveal(g, .09));
+  staggerReveal(document.querySelector('.chat-body'), .55);
+
+  /* pricing-tab switches replay the fade-up */
+  window.revealGrid = grid => {
+    gsap.fromTo(grid.children, {y:40, autoAlpha:0}, {...FADE_UP, stagger:.09, overwrite:'auto'});
+  };
+
+  /* arc chips, counters, CTA typing — all fired by ScrollTrigger */
+  ScrollTrigger.create({trigger:'#arc', start:'top 85%', once:true, onEnter:() => revealArc()});
+  ScrollTrigger.create({trigger:'.stat-band', start:'top 82%', once:true,
+    onEnter:() => document.querySelectorAll('.stat-band .n').forEach(countUp)});
+  document.querySelectorAll('.seg-stat').forEach(el =>
+    ScrollTrigger.create({trigger:el, start:'top 88%', once:true, onEnter:() => countUp(el)}));
+  ScrollTrigger.create({trigger:'#cta', start:'top 70%', once:true,
+    onEnter:() => { if (!ctaTyped){ ctaTyped = true; typeInto('typeCta','caretCta','cta', 46); } }});
+
+  /* scroll-scrubbed motion (zooms, parallax) — updated inside the same loop */
+  [document.querySelector('.hero-media .black-card'), document.querySelector('#cta .black-card')].forEach(el => {
+    if (!el) return;
+    gsap.fromTo(el, {scale:.93, y:44}, {scale:1, y:0, ease:'none',
+      scrollTrigger:{trigger:el, start:'top 96%', end:'top 42%', scrub:true}});
+  });
+  document.querySelectorAll('.svc-row .media').forEach(el => {
+    gsap.fromTo(el, {y:70}, {y:-50, ease:'none',
+      scrollTrigger:{trigger:el, start:'top bottom', end:'bottom top', scrub:true}});
+  });
+  gsap.fromTo('#arcRow', {x:70}, {x:-70, ease:'none',
+    scrollTrigger:{trigger:'#arc', start:'top bottom', end:'bottom top', scrub:true}});
+  gsap.to('#confettiHero', {y:-90, ease:'none',
+    scrollTrigger:{trigger:'#hero', start:'top top', end:'bottom top', scrub:true}});
+  gsap.fromTo('.ft-giant', {yPercent:30}, {yPercent:0, ease:'none',
+    scrollTrigger:{trigger:'footer', start:'top bottom', end:'bottom bottom', scrub:true}});
+})();
+</script>
+</body>
+</html>

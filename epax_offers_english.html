@@ -1,0 +1,266 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;}
+.wrap{max-width:680px;margin:0 auto;padding:1rem;}
+.tabs{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap;}
+.tab{font-size:12px;padding:8px 18px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;font-family:'DM Sans',var(--font-sans);}
+.tab.active{background:#042C53;color:#C9A84C;border-color:#042C53;}
+.offer{display:none;font-family:'DM Sans',var(--font-sans);}
+.offer.show{display:block;}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.75rem;}
+.logo{font-family:'Playfair Display',serif;font-size:34px;font-weight:400;color:#042C53;letter-spacing:8px;margin:0;line-height:1;}
+.logo-sub{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888780;margin-top:4px;}
+.lp{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 13px;border:0.5px solid #B5D4F4;border-radius:20px;color:#185FA5;background:#E6F1FB;margin-top:4px;}
+.pain{border-radius:16px;padding:1.75rem 2rem;margin-bottom:1rem;border:0.5px solid #C9A84C;background:#042C53;position:relative;overflow:hidden;}
+.pr{position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;border:0.5px solid rgba(201,168,76,0.15);}
+.pr2{position:absolute;right:20px;bottom:-60px;width:130px;height:130px;border-radius:50%;border:0.5px solid rgba(201,168,76,0.1);}
+.ps{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#C9A84C;margin:0 0 12px;}
+.ph{font-family:'Playfair Display',serif;font-size:21px;font-weight:400;line-height:1.5;color:#fff;margin:0 0 12px;max-width:430px;}
+.pb{font-size:12px;color:#85B7EB;line-height:1.7;margin:0 0 16px;max-width:410px;}
+.tags{display:flex;gap:8px;flex-wrap:wrap;}
+.tag{font-size:10px;padding:5px 12px;border-radius:20px;border:0.5px solid rgba(201,168,76,0.35);color:#C9A84C;background:rgba(201,168,76,0.08);}
+.ag{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem;}
+.agc{border-radius:12px;padding:1rem;border:0.5px solid #B5D4F4;background:#E6F1FB;text-align:center;}
+.agn{font-family:'Playfair Display',serif;font-size:24px;color:#042C53;margin:0 0 4px;}
+.agl{font-size:10px;color:#185FA5;line-height:1.5;margin:0;}
+.sl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888780;margin:1.75rem 0 0.875rem;}
+.anc{border-radius:12px;padding:1rem 1.25rem;background:#FAEEDA;border:0.5px solid #FAC775;margin-bottom:1rem;display:flex;align-items:center;gap:14px;}
+.anc i{font-size:20px;color:#854F0B;flex-shrink:0;}
+.at{font-size:12px;color:#412402;line-height:1.6;margin:0;}
+.svcs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0.5rem;}
+.svc{border-radius:14px;padding:1.1rem 1.2rem;border:0.5px solid #B5D4F4;background:#E6F1FB;}
+.svc.nv{background:#042C53;border-color:#C9A84C;}
+.st2{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+.si{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#042C53;}
+.svc.nv .si{background:rgba(201,168,76,0.15);}
+.si i{font-size:14px;color:#C9A84C;}
+.sn{font-size:13px;font-weight:500;color:#042C53;margin:0;}
+.svc.nv .sn{color:#C9A84C;}
+.sd{font-size:11px;color:#185FA5;line-height:1.6;margin:0;}
+.svc.nv .sd{color:#85B7EB;}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px;}
+.plan{border-radius:14px;padding:1.3rem 1rem 1.1rem;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);text-align:center;}
+.plan.ft{background:#042C53;border:1.5px solid #C9A84C;}
+.pbdg{font-size:9px;letter-spacing:1px;background:#C9A84C;color:#042C53;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px;font-weight:500;}
+.pn2{font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;margin:0 0 6px;color:var(--color-text-secondary);}
+.pn2.lt{color:#85B7EB;}
+.pp{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;margin:0 0 1px;color:var(--color-text-primary);}
+.pp.lt{color:#fff;}
+.pm{font-size:10px;margin:0 0 10px;color:var(--color-text-tertiary);}
+.pm.lt{color:#85B7EB;}
+.pdv{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:0 0 10px;}
+.pdv.lt{border-color:rgba(201,168,76,0.2);}
+.pf{font-size:11px;color:var(--color-text-secondary);line-height:1.6;margin:0 0 5px;text-align:left;display:flex;align-items:flex-start;gap:6px;}
+.pf.lt{color:#B5D4F4;}
+.pf i{font-size:13px;color:#C9A84C;flex-shrink:0;margin-top:1px;}
+.psv{font-size:10px;background:#EAF3DE;color:#3B6D11;padding:4px 10px;border-radius:20px;border:0.5px solid #C0DD97;display:inline-block;margin-top:8px;}
+.lad{border-radius:12px;padding:1.25rem 1.5rem;background:#042C53;border:0.5px solid rgba(201,168,76,0.3);margin-bottom:1rem;}
+.lt3{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#C9A84C;margin:0 0 14px;}
+.ls3{display:flex;align-items:center;}
+.ls{flex:1;text-align:center;}
+.lsn{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,0.15);border:0.5px solid #C9A84C;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:11px;font-weight:500;color:#C9A84C;}
+.lsl{font-size:10px;color:#85B7EB;line-height:1.4;}
+.la{color:rgba(201,168,76,0.4);font-size:14px;flex-shrink:0;margin-bottom:16px;}
+.sc{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:10px;background:#FCEBEB;border:0.5px solid #F7C1C1;margin-bottom:1rem;}
+.sc i{font-size:18px;color:#A32D2D;flex-shrink:0;margin-top:2px;}
+.sct{font-size:12px;color:#501313;line-height:1.6;margin:0;}
+.sct strong{font-weight:500;}
+.gu{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;background:#EAF3DE;border:0.5px solid #C0DD97;}
+.gu i{font-size:20px;color:#3B6D11;flex-shrink:0;margin-top:2px;}
+.gh{font-size:12px;font-weight:500;color:#173404;margin:0 0 3px;}
+.gbody{font-size:11px;color:#3B6D11;line-height:1.6;margin:0;}
+.divider{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:1.75rem 0;}
+.fr{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+.fi{font-size:12px;color:var(--color-text-secondary);display:flex;align-items:center;gap:5px;}
+.fi i{font-size:14px;color:#C9A84C;}
+.cta-row{margin-top:1.5rem;display:flex;gap:10px;flex-wrap:wrap;}
+button.ct{font-size:12px;padding:10px 20px;border-radius:10px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);cursor:pointer;font-family:'DM Sans',var(--font-sans);}
+button.ct.pr{background:#042C53;color:#C9A84C;border-color:#042C53;}
+@media(max-width:480px){.svcs,.plans,.ag{grid-template-columns:1fr;}.ls3{flex-direction:column;}}
+</style>
+
+<h2 class="sr-only">EPAX offers in English — hotels, restaurants, and touring companies</h2>
+
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="showOffer('hotel',this)">Hotels</button>
+    <button class="tab" onclick="showOffer('restaurant',this)">Restaurants & cafes</button>
+    <button class="tab" onclick="showOffer('tour',this)">Touring companies</button>
+  </div>
+
+  <!-- HOTELS -->
+  <div class="offer show" id="hotel">
+    <div class="hdr">
+      <div><p class="logo">EPAX</p><p class="logo-sub">Peace in every process</p></div>
+      <div class="lp">EN &nbsp;/&nbsp; MN</div>
+    </div>
+    <div class="pain">
+      <div class="pr"></div><div class="pr2"></div>
+      <p class="ps">For hotels & resorts</p>
+      <p class="ph">Foreign tourists search and search — and your hotel never comes up.</p>
+      <p class="pb">The average hotel in Mongolia runs at just 30% occupancy annually. The gap between 30% and 60% is not a product problem. It is a visibility problem. EPAX fixes it — for less than the cost of one part-time hire.</p>
+      <div class="tags"><span class="tag">Hotels</span><span class="tag">Resorts</span><span class="tag">Guesthouses</span><span class="tag">Capsule hotels</span></div>
+    </div>
+    <div class="ag">
+      <div class="agc"><p class="agn">809k</p><p class="agl">foreign tourists visited Mongolia in 2024 — a record</p></div>
+      <div class="agc"><p class="agn">30%</p><p class="agl">average hotel occupancy annually — far too low</p></div>
+      <div class="agc"><p class="agn">$1.6B</p><p class="agl">tourism revenue in 2024 — growing 33% per year</p></div>
+    </div>
+    <div class="anc">
+      <i class="ti ti-user-dollar" aria-hidden="true"></i>
+      <p class="at"><strong>A full-time digital employee in Ulaanbaatar costs $500–$700/month</strong> — plus social insurance, onboarding, and management time. EPAX delivers the same output for $200–$350/month with no hiring risk and no long contracts.</p>
+    </div>
+    <p class="sl">What we handle every month</p>
+    <div class="svcs">
+      <div class="svc">
+        <div class="st2"><div class="si"><i class="ti ti-map-pin" aria-hidden="true"></i></div><p class="sn">Platform presence</p></div>
+        <p class="sd">Google Maps, TripAdvisor, Booking.com — fully set up and optimized in English so foreign visitors can find and book you.</p>
+      </div>
+      <div class="svc">
+        <div class="st2"><div class="si"><i class="ti ti-brand-instagram" aria-hidden="true"></i></div><p class="sn">Social media</p></div>
+        <p class="sd">Weekly English content on Instagram and Facebook. The kind that attracts international guests, not just local likes.</p>
+      </div>
+      <div class="svc nv">
+        <div class="st2"><div class="si"><i class="ti ti-message-reply" aria-hidden="true"></i></div><p class="sn">Guest communication</p></div>
+        <p class="sd">Every DM, review, and inquiry answered in English — fast. No missed leads. No tourist left without a reply.</p>
+      </div>
+      <div class="svc nv">
+        <div class="st2"><div class="si"><i class="ti ti-chart-bar" aria-hidden="true"></i></div><p class="sn">Reporting & invoicing</p></div>
+        <p class="sd">Monthly occupancy and growth report. E-invoice processing. Everything documented and clean.</p>
+      </div>
+    </div>
+    <p class="sl">Pricing</p>
+    <div class="plans">
+      <div class="plan"><p class="pn2">Starter</p><p class="pp">$200</p><p class="pm">first month</p><hr class="pdv"><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>3-platform setup</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>4 weeks of content</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Monthly report</p></div>
+      <div class="plan ft"><span class="pbdg">Best value</span><p class="pn2 lt">Growth</p><p class="pp lt">$350</p><p class="pm lt">per month</p><hr class="pdv lt"><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Everything in Starter</p><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Guest communication</p><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Review management</p><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Monthly growth report</p><span class="psv">Save $250+/mo vs. hiring</span></div>
+      <div class="plan"><p class="pn2">Full ops</p><p class="pp">$500</p><p class="pm">per month</p><hr class="pdv"><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Everything in Growth</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>E-invoice processing</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Priority response</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Dedicated account lead</p></div>
+    </div>
+    <div class="sc"><i class="ti ti-clock" aria-hidden="true"></i><p class="sct"><strong>We limit new clients to 5 per quarter</strong> to guarantee quality. Peak tourist season starts in June. Businesses that start now will be fully set up before the rush.</p></div>
+    <div class="lad"><p class="lt3">How it starts — 3 steps, zero risk</p><div class="ls3"><div class="ls"><div class="lsn">1</div><p class="lsl">Free audit<br><span style="color:#C9A84C;font-size:9px;">we show exactly what's missing</span></p></div><div class="la"><i class="ti ti-arrow-right" aria-hidden="true"></i></div><div class="ls"><div class="lsn">2</div><p class="lsl">One-month pilot<br><span style="color:#C9A84C;font-size:9px;">see results before committing</span></p></div><div class="la"><i class="ti ti-arrow-right" aria-hidden="true"></i></div><div class="ls"><div class="lsn">3</div><p class="lsl">Monthly retainer<br><span style="color:#C9A84C;font-size:9px;">cancel anytime, no questions</span></p></div></div></div>
+    <div class="gu"><i class="ti ti-shield-check" aria-hidden="true"></i><div><p class="gh">The EPAX guarantee</p><p class="gbody">If you complete your first month and do not see a measurable improvement in your online visibility or guest inquiries — we work the second month free until you do. We only win when you win.</p></div></div>
+    <hr class="divider">
+    <div class="fr"><div class="fi"><i class="ti ti-world" aria-hidden="true"></i>epax.mn</div><div class="fi"><i class="ti ti-mail" aria-hidden="true"></i>hello@epax.mn</div><div class="fi"><i class="ti ti-brand-instagram" aria-hidden="true"></i>@epax.ub</div><div class="fi"><i class="ti ti-phone" aria-hidden="true"></i>+976 __ __ __ __</div></div>
+  </div>
+
+  <!-- RESTAURANTS -->
+  <div class="offer" id="restaurant">
+    <div class="hdr">
+      <div><p class="logo">EPAX</p><p class="logo-sub">Peace in every process</p></div>
+      <div class="lp">EN &nbsp;/&nbsp; MN</div>
+    </div>
+    <div class="pain">
+      <div class="pr"></div><div class="pr2"></div>
+      <p class="ps">For restaurants & coffee shops</p>
+      <p class="ph">Foreign tourists walk right past your door and go somewhere else.</p>
+      <p class="pb">Foreign visitors decide where to eat based on Google Maps and Instagram. If you are not there in English — with photos, reviews, and a menu they can read — they walk to the next place. The best food in Ulaanbaatar means nothing if nobody can find it.</p>
+      <div class="tags"><span class="tag">Restaurants</span><span class="tag">Coffee shops</span><span class="tag">Cafes</span><span class="tag">Street food</span></div>
+    </div>
+    <div class="ag">
+      <div class="agc"><p class="agn">809k</p><p class="agl">foreign tourists in 2024 — all deciding where to eat</p></div>
+      <div class="agc"><p class="agn">90%</p><p class="agl">of tourists search Google before choosing a restaurant</p></div>
+      <div class="agc"><p class="agn">448+</p><p class="agl">restaurants in Ulaanbaatar — competition is fierce</p></div>
+    </div>
+    <div class="anc">
+      <i class="ti ti-user-dollar" aria-hidden="true"></i>
+      <p class="at"><strong>Restaurant owners should be focused on the food — not digital admin.</strong> EPAX handles everything that gets foreign customers through your door. Starting from $150/month.</p>
+    </div>
+    <p class="sl">What we handle every month</p>
+    <div class="svcs">
+      <div class="svc">
+        <div class="st2"><div class="si"><i class="ti ti-map-pin" aria-hidden="true"></i></div><p class="sn">Google Maps setup</p></div>
+        <p class="sd">English menu, photos, hours, and location fully optimized on Google Maps so tourists find you when they search.</p>
+      </div>
+      <div class="svc">
+        <div class="st2"><div class="si"><i class="ti ti-brand-instagram" aria-hidden="true"></i></div><p class="sn">Food content</p></div>
+        <p class="sd">Weekly food photos, specials, and atmosphere content in English. Content that makes people say "I have to go here."</p>
+      </div>
+      <div class="svc nv">
+        <div class="st2"><div class="si"><i class="ti ti-star" aria-hidden="true"></i></div><p class="sn">Review management</p></div>
+        <p class="sd">Every Google and TripAdvisor review responded to in English. A bad review handled well is a trust signal.</p>
+      </div>
+      <div class="svc nv">
+        <div class="st2"><div class="si"><i class="ti ti-file-text" aria-hidden="true"></i></div><p class="sn">English menu & reporting</p></div>
+        <p class="sd">Online English menu set up and maintained. Monthly report showing which content drove the most new visitors.</p>
+      </div>
+    </div>
+    <p class="sl">Pricing</p>
+    <div class="plans">
+      <div class="plan"><p class="pn2">Starter</p><p class="pp">$150</p><p class="pm">first month</p><hr class="pdv"><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Google Maps optimization</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>4 weeks of content</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>English menu online</p></div>
+      <div class="plan ft"><span class="pbdg">Best value</span><p class="pn2 lt">Growth</p><p class="pp lt">$250</p><p class="pm lt">per month</p><hr class="pdv lt"><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Everything in Starter</p><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Review management</p><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Message handling</p><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Monthly report</p><span class="psv">Save $250+/mo vs. hiring</span></div>
+      <div class="plan"><p class="pn2">Full ops</p><p class="pp">$350</p><p class="pm">per month</p><hr class="pdv"><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Everything in Growth</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>TripAdvisor setup</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>E-invoice processing</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Dedicated account lead</p></div>
+    </div>
+    <div class="sc"><i class="ti ti-clock" aria-hidden="true"></i><p class="sct"><strong>We limit new clients to 5 per quarter.</strong> Peak tourist season starts in June. Restaurants that are not set up by then will miss the entire summer rush.</p></div>
+    <div class="lad"><p class="lt3">How it starts — 3 steps, zero risk</p><div class="ls3"><div class="ls"><div class="lsn">1</div><p class="lsl">Free audit<br><span style="color:#C9A84C;font-size:9px;">we check your online presence</span></p></div><div class="la"><i class="ti ti-arrow-right" aria-hidden="true"></i></div><div class="ls"><div class="lsn">2</div><p class="lsl">One-month pilot<br><span style="color:#C9A84C;font-size:9px;">see results before committing</span></p></div><div class="la"><i class="ti ti-arrow-right" aria-hidden="true"></i></div><div class="ls"><div class="lsn">3</div><p class="lsl">Monthly retainer<br><span style="color:#C9A84C;font-size:9px;">cancel anytime, no questions</span></p></div></div></div>
+    <div class="gu"><i class="ti ti-shield-check" aria-hidden="true"></i><div><p class="gh">The EPAX guarantee</p><p class="gbody">If your Google Maps visibility does not improve in the first month — we work the second month free. Your food is excellent. We just tell the world about it.</p></div></div>
+    <hr class="divider">
+    <div class="fr"><div class="fi"><i class="ti ti-world" aria-hidden="true"></i>epax.mn</div><div class="fi"><i class="ti ti-mail" aria-hidden="true"></i>hello@epax.mn</div><div class="fi"><i class="ti ti-brand-instagram" aria-hidden="true"></i>@epax.ub</div><div class="fi"><i class="ti ti-phone" aria-hidden="true"></i>+976 __ __ __ __</div></div>
+  </div>
+
+  <!-- TOURING -->
+  <div class="offer" id="tour">
+    <div class="hdr">
+      <div><p class="logo">EPAX</p><p class="logo-sub">Peace in every process</p></div>
+      <div class="lp">EN &nbsp;/&nbsp; MN</div>
+    </div>
+    <div class="pain">
+      <div class="pr"></div><div class="pr2"></div>
+      <p class="ps">For touring companies</p>
+      <p class="ph">Your tours are extraordinary. Foreign tourists just cannot find you.</p>
+      <p class="pb">Foreign visitors research and book their Mongolia trips online — months in advance. If you have no English presence, no active Instagram, and no one responding to inquiries fast, they book with a competitor. One missed booking is $3,000–$6,000 lost. EPAX prevents that.</p>
+      <div class="tags"><span class="tag">Tour operators</span><span class="tag">Ger camps</span><span class="tag">Adventure tours</span><span class="tag">Cultural tours</span></div>
+    </div>
+    <div class="ag">
+      <div class="agc"><p class="agn">403</p><p class="agl">tour operators in Mongolia — most invisible online</p></div>
+      <div class="agc"><p class="agn">$4,500</p><p class="agl">average booking value — one missed booking is costly</p></div>
+      <div class="agc"><p class="agn">2M</p><p class="agl">tourist target by 2030 — the market is growing fast</p></div>
+    </div>
+    <div class="anc">
+      <i class="ti ti-user-dollar" aria-hidden="true"></i>
+      <p class="at"><strong>One additional foreign booking = $3,000–$6,000 in revenue.</strong> EPAX costs a fraction of that. A single extra booking per month more than pays for the entire service.</p>
+    </div>
+    <p class="sl">What we handle every month</p>
+    <div class="svcs">
+      <div class="svc">
+        <div class="st2"><div class="si"><i class="ti ti-world" aria-hidden="true"></i></div><p class="sn">English platform presence</p></div>
+        <p class="sd">Google, TripAdvisor, and travel platforms — your tours listed in English with compelling descriptions and professional photos.</p>
+      </div>
+      <div class="svc">
+        <div class="st2"><div class="si"><i class="ti ti-brand-instagram" aria-hidden="true"></i></div><p class="sn">Tour content</p></div>
+        <p class="sd">Weekly steppe, nature, and culture content in English. The kind that makes people feel they must come to Mongolia.</p>
+      </div>
+      <div class="svc nv">
+        <div class="st2"><div class="si"><i class="ti ti-message-reply" aria-hidden="true"></i></div><p class="sn">Inquiry handling</p></div>
+        <p class="sd">Every foreign inquiry answered in English — professionally and fast. No lead left waiting more than 24 hours.</p>
+      </div>
+      <div class="svc nv">
+        <div class="st2"><div class="si"><i class="ti ti-star" aria-hidden="true"></i></div><p class="sn">Reviews & reporting</p></div>
+        <p class="sd">All TripAdvisor and Google reviews responded to in English. Monthly report showing reach, inquiries, and conversions.</p>
+      </div>
+    </div>
+    <p class="sl">Pricing</p>
+    <div class="plans">
+      <div class="plan"><p class="pn2">Starter</p><p class="pp">$250</p><p class="pm">first month</p><hr class="pdv"><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>3-platform setup</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>4 weeks of tour content</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Monthly report</p></div>
+      <div class="plan ft"><span class="pbdg">Best value</span><p class="pn2 lt">Growth</p><p class="pp lt">$450</p><p class="pm lt">per month</p><hr class="pdv lt"><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Everything in Starter</p><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Inquiry handling in English</p><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Review management</p><p class="pf lt"><i class="ti ti-check" aria-hidden="true"></i>Monthly growth report</p><span class="psv">1 extra booking pays for months</span></div>
+      <div class="plan"><p class="pn2">Full ops</p><p class="pp">$700</p><p class="pm">per month</p><hr class="pdv"><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Everything in Growth</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>E-invoice processing</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Priority response SLA</p><p class="pf"><i class="ti ti-check" aria-hidden="true"></i>Dedicated account lead</p></div>
+    </div>
+    <div class="sc"><i class="ti ti-clock" aria-hidden="true"></i><p class="sct"><strong>We limit new clients to 5 per quarter.</strong> Foreign tourists book Mongolia tours 3–6 months in advance. Start now and your summer season is fully covered.</p></div>
+    <div class="lad"><p class="lt3">How it starts — 3 steps, zero risk</p><div class="ls3"><div class="ls"><div class="lsn">1</div><p class="lsl">Free audit<br><span style="color:#C9A84C;font-size:9px;">we assess your online presence</span></p></div><div class="la"><i class="ti ti-arrow-right" aria-hidden="true"></i></div><div class="ls"><div class="lsn">2</div><p class="lsl">One-month pilot<br><span style="color:#C9A84C;font-size:9px;">see results before committing</span></p></div><div class="la"><i class="ti ti-arrow-right" aria-hidden="true"></i></div><div class="ls"><div class="lsn">3</div><p class="lsl">Monthly retainer<br><span style="color:#C9A84C;font-size:9px;">cancel anytime, no questions</span></p></div></div></div>
+    <div class="gu"><i class="ti ti-shield-check" aria-hidden="true"></i><div><p class="gh">The EPAX guarantee</p><p class="gbody">If your online visibility and inquiries do not improve measurably in the first month — we work the second month free. Your tours are world-class. The world just needs to know.</p></div></div>
+    <hr class="divider">
+    <div class="fr"><div class="fi"><i class="ti ti-world" aria-hidden="true"></i>epax.mn</div><div class="fi"><i class="ti ti-mail" aria-hidden="true"></i>hello@epax.mn</div><div class="fi"><i class="ti ti-brand-instagram" aria-hidden="true"></i>@epax.ub</div><div class="fi"><i class="ti ti-phone" aria-hidden="true"></i>+976 __ __ __ __</div></div>
+    <div class="cta-row">
+      <button class="ct pr" onclick="sendPrompt('I want to edit specific wording on the English EPAX offers. Let me tell you what to change.')">Edit wording ↗</button>
+      <button class="ct" onclick="sendPrompt('Write three WhatsApp outreach messages in English for: 1) a hotel owner 2) a restaurant owner 3) a tour operator in Ulaanbaatar to introduce EPAX and offer the free audit')">Write outreach messages ↗</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showOffer(id,btn){
+  document.querySelectorAll('.offer').forEach(o=>o.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('show');
+  btn.classList.add('active');
+}
+</script>
