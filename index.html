@@ -88,8 +88,6 @@
   /* ============ HERO ============ */
   #hero{position:relative;padding:170px 0 40px;text-align:center;overflow:hidden;}
   .confetti{position:absolute;inset:0;pointer-events:none;z-index:0;}
-  /* canvas is a replaced element: inset:0 alone won't stretch it — needs explicit 100% */
-  #heroDots{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
   .confetti i{position:absolute;display:block;border-radius:3px;transform:rotate(var(--rot,0deg));}
   .hero-h1{
     position:relative;z-index:1;
@@ -357,7 +355,6 @@
 
   /* ============ MOTION ============ */
   html.lenis{scroll-behavior:auto!important;}
-  #trail{position:fixed;inset:0;z-index:300;pointer-events:none;}
   /* when the GSAP engine drives reveals, neutralize the CSS-class fallback */
   .gsap-motion .reveal{opacity:1;transform:none;transition:none;}
   .gsap-motion .anim-child{opacity:1;transform:none;transition:none;}
@@ -451,7 +448,6 @@
 
 <!-- ============ HERO ============ -->
 <section id="hero">
-  <canvas id="heroDots" aria-hidden="true"></canvas>
   <div class="confetti" id="confettiHero"></div>
   <div class="wrap">
     <h1 class="hero-h1"><span id="typeHero"></span><span class="caret" id="caretHero"></span></h1>
@@ -948,7 +944,6 @@
   </div>
 </footer>
 
-<canvas id="trail" aria-hidden="true"></canvas>
 <script src="node_modules/gsap/dist/gsap.min.js"></script>
 <script src="node_modules/gsap/dist/ScrollTrigger.min.js"></script>
 <script src="node_modules/lenis/dist/lenis.min.js"></script>
@@ -1009,137 +1004,6 @@ let ctaTyped = false; /* CTA typing is triggered by the motion engine */
       background:${colors[Math.random()*colors.length|0]};opacity:${.35+Math.random()*.5};
       --rot:${Math.random()*360}deg;--fd:${5+Math.random()*6}s;--fdel:${-Math.random()*8}s;`;
     host.appendChild(s);
-  }
-})();
-
-/* ---------- hero floating dots: mouse-reactive canvas ----------
-   pointermove only records x/y; all physics + drawing run inside
-   the single gsap.ticker loop (same architecture as the star trail). */
-(function(){
-  const PARTICLE_COUNT = 80;    /* dot count */
-  const REPEL_RADIUS   = 120;   /* px around cursor that pushes dots */
-  const LERP           = 0.08;  /* chase factor — the lag is the feel */
-  const RING_MODE      = false; /* true = slowly rotating Antigravity-style ring */
-
-  const DOT_R = 2, COLOR = '#1a1a4d';
-  const REPEL_FORCE = 26, REPEL_MAX = 90;      /* push = min(MAX, (R/d - 1) * FORCE) */
-  const canvas = document.getElementById('heroDots');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const FINE = matchMedia('(pointer:fine)').matches;
-
-  let W = 0, H = 0, DPR = 1;
-  function size(){
-    const dpr = Math.min(2, devicePixelRatio || 1);
-    const w = canvas.clientWidth, h = canvas.clientHeight;
-    if (w === W && h === H && dpr === DPR) return false;  /* guard: never react to our own attribute writes */
-    W = w; H = h; DPR = dpr;
-    canvas.width  = Math.max(1, Math.round(W * DPR));
-    canvas.height = Math.max(1, Math.round(H * DPR));
-    return true;
-  }
-  size();
-
-  /* homes are stored as fractions so resize keeps the layout and the
-     dots just glide to their re-scaled homes */
-  const dots = Array.from({length: PARTICLE_COUNT}, (_, i) => {
-    const d = {
-      fx: .03 + Math.random() * .94,
-      fy: .03 + Math.random() * .94,
-      a0: (i / PARTICLE_COUNT) * Math.PI * 2 + Math.random() * .25,  /* ring angle */
-      rr: .82 + Math.random() * .36,                                  /* ring radius spread */
-      da: 5 + Math.random() * 9,      /* drift amplitude px */
-      ds: .18 + Math.random() * .4,   /* drift speed rad/s */
-      ph: Math.random() * Math.PI * 2,
-      o:  .1 + Math.random() * .9,
-      x: 0, y: 0
-    };
-    return d;
-  });
-
-  function homeOf(d, t){
-    if (RING_MODE){
-      const a = d.a0 + t * .05;                       /* slow global rotation */
-      const rad = Math.min(W, H) * .38 * d.rr;
-      return [W / 2 + Math.cos(a) * rad, H * .48 + Math.sin(a) * rad * .55];
-    }
-    return [d.fx * W, d.fy * H];
-  }
-  dots.forEach(d => { const [hx, hy] = homeOf(d, 0); d.x = hx; d.y = hy; });
-
-  function draw(d){
-    ctx.globalAlpha = d.o;
-    ctx.beginPath();
-    ctx.arc(d.x, d.y, DOT_R, 0, 6.2832);
-    ctx.fill();
-  }
-  function drawStatic(){
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = COLOR;
-    dots.forEach(d => { const [hx, hy] = homeOf(d, 0); d.x = hx; d.y = hy; draw(d); });
-    ctx.globalAlpha = 1;
-  }
-
-  /* reduced motion: static constellation, no listeners, no loop */
-  if (REDUCE){
-    drawStatic();
-    new ResizeObserver(() => { if (size()) drawStatic(); }).observe(canvas);
-    return;
-  }
-
-  new ResizeObserver(size).observe(canvas);
-
-  /* pointer state — listeners ONLY record, never animate */
-  const P = {x: 0, y: 0, seen: false};
-  addEventListener('pointermove', e => { P.x = e.clientX; P.y = e.clientY; P.seen = true; }, {passive:true});
-  document.addEventListener('mouseleave', () => { P.seen = false; });  /* cursor left window → glide home */
-
-  /* pause all work while the hero is off-screen */
-  let visible = true;
-  new IntersectionObserver(en => { visible = en[0].isIntersecting; }).observe(canvas);
-
-  function dotsFrame(now){
-    if (!visible || !W) return;
-    const t = now * .001;
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = COLOR;
-    const active = FINE && P.seen;
-    let mx = 0, my = 0;
-    if (active){
-      const r = canvas.getBoundingClientRect();
-      mx = P.x - r.left; my = P.y - r.top;
-    }
-    for (const d of dots){
-      const [hx, hy] = homeOf(d, t);
-      /* ambient drift around home — alive with no mouse input */
-      let tx = hx + Math.cos(t * d.ds + d.ph) * d.da;
-      let ty = hy + Math.sin(t * d.ds * .9 + d.ph * 1.7) * d.da;
-      /* cursor repulsion, force inversely proportional to distance */
-      if (active){
-        const dx = tx - mx, dy = ty - my;
-        const dist = Math.hypot(dx, dy);
-        if (dist < REPEL_RADIUS && dist > .5){
-          const f = Math.min(REPEL_MAX, (REPEL_RADIUS / dist - 1) * REPEL_FORCE);
-          tx += dx / dist * f;
-          ty += dy / dist * f;
-        }
-      }
-      /* dots CHASE their target — never snap */
-      d.x += (tx - d.x) * LERP;
-      d.y += (ty - d.y) * LERP;
-      draw(d);
-    }
-    ctx.globalAlpha = 1;
-  }
-
-  /* ride the site's single RAF loop; standalone rAF only if gsap is absent */
-  if (window.gsap){
-    gsap.ticker.add(() => dotsFrame(performance.now()));
-  } else {
-    const loop = now => { dotsFrame(now); requestAnimationFrame(loop); };
-    requestAnimationFrame(loop);
   }
 })();
 
@@ -1446,8 +1310,8 @@ try{ if (localStorage.getItem('epax-lang') === 'mn') setLang('mn'); }catch(e){}
 
 /* ================================================================
    MOTION ENGINE — exactly ONE RAF loop (gsap.ticker) drives:
-   Lenis smooth scroll, ScrollTrigger, the cursor star trail,
-   the nav state, and the word scrub. No animation is driven
+   Lenis smooth scroll, ScrollTrigger, the nav state, and the
+   word scrub. No animation is driven
    directly off mousemove/scroll events — those only record targets.
    ================================================================ */
 (function(){
@@ -1484,61 +1348,6 @@ try{ if (localStorage.getItem('epax-lang') === 'mn') setLang('mn'); }catch(e){}
     });
   }
 
-  /* ---- (3) cursor star trail: one canvas; pointermove only records targets ---- */
-  const canvas = document.getElementById('trail');
-  const ctx = canvas.getContext('2d');
-  const FINE = matchMedia('(pointer:fine)').matches;
-  const pointer = {x: innerWidth/2, y: innerHeight/2, seen:false, last:0};
-  addEventListener('pointermove', e => {
-    pointer.x = e.clientX; pointer.y = e.clientY;
-    pointer.seen = true; pointer.last = performance.now();
-  }, {passive:true});
-  let DPR = 1;
-  function sizeCanvas(){
-    DPR = Math.min(2, devicePixelRatio || 1);
-    canvas.width = innerWidth * DPR;
-    canvas.height = innerHeight * DPR;
-  }
-  sizeCanvas();
-  addEventListener('resize', sizeCanvas);
-  const TRAIL_COLORS = ['#C9A84C','#4a8fdd','#85B7EB','#0d3f74'];
-  const N = 16;
-  const parts = Array.from({length:N}, () => ({x: pointer.x, y: pointer.y}));
-  function drawStar(x, y, s, rot, color, alpha){
-    ctx.save();
-    ctx.translate(x, y); ctx.rotate(rot);
-    ctx.globalAlpha = alpha; ctx.strokeStyle = color;
-    ctx.lineWidth = Math.max(1, s * .3); ctx.lineCap = 'round';
-    const d = s * .5;
-    ctx.beginPath();
-    ctx.moveTo(-s, 0); ctx.lineTo(s, 0);
-    ctx.moveTo(0, -s); ctx.lineTo(0, s);
-    ctx.moveTo(-d, -d); ctx.lineTo(d, d);
-    ctx.moveTo(d, -d); ctx.lineTo(-d, d);
-    ctx.stroke();
-    ctx.restore();
-  }
-  function trailFrame(now){
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-    if (!FINE || !pointer.seen) return;
-    const idle = now - pointer.last;
-    const fade = Math.max(0, 1 - Math.max(0, idle - 400) / 600);
-    if (fade === 0) return;
-    let tx = pointer.x, ty = pointer.y;
-    for (let i = 0; i < N; i++){
-      const p = parts[i];
-      const t = i / (N - 1);
-      const k = .12 - t * .04;              /* lerp factor: 0.12 head → 0.08 tail */
-      p.x += (tx - p.x) * k;
-      p.y += (ty - p.y) * k;
-      drawStar(p.x, p.y, (1 - t) * 6.5 + 2,
-        now * .0012 * (i % 2 ? 1 : -1) + i,
-        TRAIL_COLORS[i % 4], (1 - t) * .8 * fade);
-      tx = p.x; ty = p.y;
-    }
-  }
-
   /* ---- THE single RAF loop ---- */
   let lastScroll = -1;
   gsap.ticker.add(time => {
@@ -1549,7 +1358,6 @@ try{ if (localStorage.getItem('epax-lang') === 'mn') setLang('mn'); }catch(e){}
       nav.classList.toggle('scrolled', s > 8);
       scrub();                               /* word reveal reads latest scroll here */
     }
-    trailFrame(performance.now());
   });
   gsap.ticker.lagSmoothing(0);
 
